@@ -1,0 +1,16 @@
+{
+    "name": "InstantTwitch",
+    "description": "Get all your streamers that currently stream",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
+    "action": {
+        "default_popup": "index.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    }
+  }
