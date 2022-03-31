@@ -2,6 +2,10 @@ name: Build Chrome Extension
 
 on:
   workflow_dispatch:
+    inputs:
+      new_tag_name:
+        description: 'Name for the new release'     
+        required: true
 
 
 jobs:
@@ -23,8 +27,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: 
+          release_name: Release ${{ github.event.inputs.new_tag_name }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
