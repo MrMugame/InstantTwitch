@@ -20,7 +20,7 @@ jobs:
           node-version: 17
       - run: npm ci
       - run: npm run build
-      - run: zip -r -j instanttwitch.zip dist/*
+      - run: cd dist/ && zip -r instanttwitch.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
