@@ -12,7 +12,7 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 
 ## Building
 
-You can build this extension with the command below, the extension is put into the `dist` folder, from where it can be imported into chrome
+You can build this extension with the command below, the extension is put into the `dist` folder from where it can be imported into chrome
 
 ```
 npm run build
