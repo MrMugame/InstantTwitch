@@ -5,7 +5,7 @@ on:
 
 
 jobs:
-  build_extension:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Chekcout Code
