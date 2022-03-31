@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp manifest.json src/background.js dist/",
-    "preview": "vite preview"
+    "build": "vite build && cp src/manifest.json dist/ && cp src/background.js dist/assets/",
+    "preview": "vite preview",
+    "clean": "rm -r dist/"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",

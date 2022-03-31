@@ -1,8 +1,10 @@
 //import axios from "axios"
 
 import axios from "axios"
-import { CONSTANTS } from "./constants.js";
 
+const CONSTANTS = {
+    CLIENTID: "i8uqx7hag4dcu1ipxqeggxyn1ys3om"
+}
 
 const getAccessToken = async () => new Promise((resolve, reject) => chrome.storage.local.get(["access_token"], res => resolve(res.access_token)));
 
