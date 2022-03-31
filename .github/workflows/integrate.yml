@@ -1,7 +1,7 @@
 name: Build Chrome Extension
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 
 jobs:
