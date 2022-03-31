@@ -14,11 +14,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 17
-        run: npm ci
-        run: npm run build
-        run: zip -9 -y -r -q instanttwitch.zip dist/
+      - run: npm ci
+      - run: npm run build
+      - run: zip -9 -y -r -q instanttwitch.zip dist/
       - name: Create Release
-      id: create_release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
