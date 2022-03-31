@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp src/manifest.json dist/ && cp src/background.js dist/assets/",
+    "build": "vite build --emptyOutDir && cp src/manifest.json dist/ && cp src/background.js dist/assets/ && cp -r src/assets/icons dist/",
     "preview": "vite preview",
     "clean": "rm -r dist/"
   },

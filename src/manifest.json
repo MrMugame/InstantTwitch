@@ -1,7 +1,7 @@
 {
     "name": "InstantTwitch",
-    "description": "Get all your streamers that currently stream",
-    "version": "1.0",
+    "description": "Get updates on all your streamers and games on Twitch",
+    "version": "0.2",
     "manifest_version": 3,
     "permissions": [
         "tabs",
@@ -12,5 +12,10 @@
     },
     "background": {
         "service_worker": "assets/background.js"
+    },
+    "icons": { 
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+       "128": "icons/icon128.png"
     }
   }
