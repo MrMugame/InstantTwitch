@@ -9,6 +9,7 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 - [ ] Lightmode
 - [ ] Notifications
 - [ ] Full Twitch search
+- [ ] Firefox support
 
 ## Building
 
