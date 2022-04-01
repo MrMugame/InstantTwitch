@@ -10,7 +10,7 @@
     let user;
     let value = null;
 
-    data.subscribe(val => user = val.user || {});
+    data.subscribe(val => user = val?.user || {});
 
     $: {
         dispatch('inputchange', {value: value})

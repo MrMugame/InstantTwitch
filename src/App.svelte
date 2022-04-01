@@ -15,7 +15,7 @@
     load().then(res => {
         data.set(res)
 
-        if (!isValid(cache, 25)) { // 25 min data lifetime
+        if (!isValid(cache, 0.25)) { // 25 min data lifetime
             console.log("fetching")
             checkAccessToken().then(async (res) => {
                 validAccessToken = (res?.status == 200 && res?.data?.expires_in > 0);
@@ -50,6 +50,12 @@
     const refreshStreams = async () => {
         laoding = true;
         cache.streams = await getFollows(cache.user.id);
+        data.set({
+            user: cache.user,
+            streams: await getFollows(cache.user.id),
+            age: new Date().getTime()
+        });
+        save(cache);
         filteredStreams = cache.streams;
         laoding = false;
     }
