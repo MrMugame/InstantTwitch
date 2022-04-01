@@ -16,8 +16,8 @@
     const getTime = () => {
         let start_date = new Date(stream.started_at);
         let time_diff = new Date(new Date().getTime() - start_date.getTime());
-        let time_string = `${time_diff.getHours()}:${time_diff.getMinutes()}:${time_diff.getSeconds()}`
-        time_string = time_diff.getDate() > 1 ?  `${time_diff.getDate()}:` + time_string : time_string
+        let time_string = `${time_diff.getHours()-1}:${time_diff.getMinutes()}:${time_diff.getSeconds()}`
+        time_string = time_diff.getDate()-1 > 0 ?  `${time_diff.getDate()-1}:` + time_string : time_string
         return time_string
     }
 </script>
