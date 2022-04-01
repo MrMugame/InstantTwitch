@@ -1,11 +1,16 @@
 <script>
+    import { data } from '/twitch/cache.js';
     import { createEventDispatcher } from 'svelte';
     
-    export let user, validAccessToken;
+    export let validAccessToken;
     
 	const dispatch = createEventDispatcher();
 
+
+    let user;
     let value = null;
+
+    data.subscribe(val => user = val.user || {});
 
     $: {
         dispatch('inputchange', {value: value})

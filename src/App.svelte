@@ -1,45 +1,63 @@
 <script>
     import Navbar from "./lib/navbar.svelte";
     import Stream from "./lib/stream.svelte";
+    import { data, isValid, load, save } from "./twitch/cache.js"
     import { getUser, getFollows, checkAccessToken } from "./twitch/api";
-
-    let user = {};
-    let streams = [];
-    let filteredStreams = [];
-
-    let validAccessToken = false;
-
+    
     let laoding = true;
+    let validAccessToken = false;
+    let filteredStreams = [];
+    let cache = {};
 
-    checkAccessToken().then(async (res) => {
-        validAccessToken = (res?.status == 200 && res?.data?.expires_in > 0);
-        if (validAccessToken) {
-            user = await getUser();
-            streams = await getFollows(user.id);
-            filteredStreams = streams;
+    
+    data.subscribe(val => cache = val);
+
+    load().then(res => {
+        data.set(res)
+
+        if (!isValid(cache, 25)) { // 25 min data lifetime
+            console.log("fetching")
+            checkAccessToken().then(async (res) => {
+                validAccessToken = (res?.status == 200 && res?.data?.expires_in > 0);
+                if (validAccessToken) {
+                    let user = await getUser();
+                    data.set({
+                        age: new Date().getTime(),
+                        user: user,
+                        streams: await getFollows(user.id)
+                    });
+                    save(cache);
+                    filteredStreams = cache.streams;
+                    laoding = false;
+                }
+            })
+        } else {
             laoding = false;
+            validAccessToken = true;
+            filteredStreams = cache.streams;
         }
-    })
+    });
+
+
 
     const filterStreams = async (res) => {
         const searchTerm = res.detail.value.toLowerCase();
-        filteredStreams = streams.filter(stream => {
+        filteredStreams = cache.streams.filter(stream => {
             return stream.user_name.toLowerCase().includes(searchTerm)
         })
     }
 
     const refreshStreams = async () => {
         laoding = true;
-        streams = await getFollows(user.id);
-        console.log(streams);
-        filteredStreams = streams;
+        cache.streams = await getFollows(cache.user.id);
+        filteredStreams = cache.streams;
         laoding = false;
     }
 
 </script>
 
 <main class="w-[450px] h-[600px] bg-background overflow-hidden flex flex-col">
-    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={refreshStreams} user={user} validAccessToken={validAccessToken}/>
+    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={refreshStreams} validAccessToken={validAccessToken}/>
 
     <div class="overflow-y-scroll flex-1">
         {#if !laoding}
