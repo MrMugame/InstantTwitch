@@ -1,11 +1,9 @@
 name: Build Chrome Extension
 
 on:
-  workflow_dispatch:
-    inputs:
-      new_tag_name:
-        description: 'Name for the new release'     
-        required: true
+  push:
+    tags:
+    - '*'
 
 
 jobs:
