@@ -22,7 +22,7 @@ jobs:
       - run: npm run build_chrome
       - run: npm run build_firefox
       - run: cd dist_chrome/ && zip -r ../chrome_build.zip *
-      - run: cd dist_firefox/ && zip -r ../chrome_firefox.zip *
+      - run: cd dist_firefox/ && zip -r ../firefox_build.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
