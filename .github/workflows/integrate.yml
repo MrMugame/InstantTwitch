@@ -19,8 +19,10 @@ jobs:
         with:
           node-version: 17
       - run: npm ci
-      - run: npm run build
-      - run: cd dist/ && zip -r ../instanttwitch.zip *
+      - run: npm run build_chrome
+      - run: npm run build_firefox
+      - run: cd dist_chrome/ && zip -r ../chrome_build.zip *
+      - run: cd dist_firefox/ && zip -r ../chrome_firefox.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -31,13 +33,23 @@ jobs:
           release_name: Release ${{ github.event.inputs.new_tag_name }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Upload Release Asset Chrome
+        id: upload-release-asset-chrome
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./instanttwitch.zip
-          asset_name: instanttwitch.zip
+          asset_path: ./chrome_build.zip
+          asset_name: chrome_build.zip
+          asset_content_type: application/zip
+      - name: Upload Release Asset Firefox
+        id: upload-release-asset-firefox
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./firefox_build.zip
+          asset_name: firefox_build.zip
           asset_content_type: application/zip
