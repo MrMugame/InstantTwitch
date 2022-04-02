@@ -3,7 +3,7 @@ name: Build Chrome Extension
 on:
   push:
     tags:
-    - '*'
+      - '*'
 
 
 jobs:
@@ -27,8 +27,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.new_tag_name }}
-          release_name: Release ${{ github.event.inputs.new_tag_name }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Upload Release Asset Chrome
