@@ -52,7 +52,6 @@
 
     const refreshStreams = async () => {
         loading = true;
-        cache.streams = await getFollows(cache.user.id);
         data.set({
             user: cache.user,
             streams: await getFollows(cache.user.id),
