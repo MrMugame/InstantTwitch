@@ -30,6 +30,9 @@
                     filteredStreams = cache.streams;
                     loading = false;
                 }
+            }).catch(e => {
+                validAccessToken = false;
+                loading = true;
             })
         } else {
             loading = false;
