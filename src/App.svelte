@@ -15,7 +15,7 @@
     load().then(res => {
         data.set(res)
 
-        if (!isValid(cache, 0.25)) { // 25 min data lifetime
+        if (!isValid(cache, 10)) { // 10 min data lifetime
             console.log("fetching")
             checkAccessToken().then(async (res) => {
                 validAccessToken = (res?.status == 200 && res?.data?.expires_in > 0);
@@ -62,7 +62,7 @@
 
 </script>
 
-<main class="w-[450px] h-[600px] bg-background overflow-hidden flex flex-col">
+<main class="w-[450px] h-[600px] bg-background overflow-hidden flex flex-col border-none">
     <Navbar on:inputchange={res => filterStreams(res)} on:refresh={refreshStreams} validAccessToken={validAccessToken}/>
 
     <div class="overflow-y-scroll flex-1">

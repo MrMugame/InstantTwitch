@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --emptyOutDir && cp src/manifest.json dist/ && cp src/background.js dist/assets/ && cp -r src/assets/icons dist/",
+    "build_chrome": "rm -r dist_chrome && vite build --emptyOutDir && mv dist dist_chrome && cp src/chrome.manifest.json dist_chrome/manifest.json && cp src/background.js dist_chrome/assets/ && cp -r src/assets/icons dist_chrome/",
+    "build_firefox": "rm -r dist_firefox && vite build --emptyOutDir && mv dist dist_firefox && cp src/firefox.manifest.json dist_firefox/manifest.json && cp src/background.js dist_firefox/assets/ && cp -r src/assets/icons dist_firefox/",
     "preview": "vite preview",
-    "clean": "rm -r dist/"
+    "clean": "rm -r dist_chrome && rm -r dist_firefox"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
