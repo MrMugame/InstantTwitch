@@ -9,13 +9,13 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 - [ ] Lightmode
 - [ ] Notifications
 - [ ] Full Twitch search
-- [ ] Firefox support
+- [x] Firefox support
 
 ## Building
 
-You can build this extension with the command below, the extension is put into the `dist` folder from where it can be imported into chrome
+You can build this extension with one of the commands below, the extension is put into the `dist_chrome` / `dist_firefox` folder from where it can be imported into chrome / firefox
 
 ```
-npm run build
+npm run build_chrome
+npm run build_firefox
 ```
-
