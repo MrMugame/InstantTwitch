@@ -4,7 +4,7 @@
     import { data, isValid, load, save } from "./twitch/cache.js"
     import { getUser, getFollows, checkAccessToken } from "./twitch/api";
     
-    let laoding = true;
+    let loading = true;
     let validAccessToken = false;
     let filteredStreams = [];
     let cache = {};
@@ -28,11 +28,11 @@
                     });
                     save(cache);
                     filteredStreams = cache.streams;
-                    laoding = false;
+                    loading = false;
                 }
             })
         } else {
-            laoding = false;
+            loading = false;
             validAccessToken = true;
             filteredStreams = cache.streams;
         }
@@ -48,7 +48,7 @@
     }
 
     const refreshStreams = async () => {
-        laoding = true;
+        loading = true;
         cache.streams = await getFollows(cache.user.id);
         data.set({
             user: cache.user,
@@ -57,7 +57,7 @@
         });
         save(cache);
         filteredStreams = cache.streams;
-        laoding = false;
+        loading = false;
     }
 
 </script>
@@ -66,12 +66,14 @@
     <Navbar on:inputchange={res => filterStreams(res)} on:refresh={refreshStreams} validAccessToken={validAccessToken}/>
 
     <div class="overflow-y-scroll flex-1">
-        {#if !laoding}
+        {#if !loading && validAccessToken}
             {#each filteredStreams as stream}
                 <Stream stream={stream}/>
             {/each}
-        {:else}
+        {:else if loading && validAccessToken}
             <h1 class="text-center font-roboto text-xl font-bold mt-10 text-lighttext">Loading...</h1>
+        {:else}
+            <h1 class="text-center font-roboto text-xl font-bold mt-10 text-lighttext">Login first</h1>
         {/if}
     </div>
 </main>
