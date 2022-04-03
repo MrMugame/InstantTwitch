@@ -1,4 +1,5 @@
-import { load } from "./twitch/cache.js"
+import { getFollows } from "./twitch/api.js";
+import { isValid, load, save } from "./twitch/cache.js"
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
@@ -33,4 +34,43 @@ const makeURL = () => {
     return url.href
 }
 
+chrome.alarms.create("update", { periodInMinutes: 5 }); // 5 minute update cycle
 
+chrome.alarms.onAlarm.addListener(async alarm => {
+    if (alarm.name !== "update") { return }
+    
+    const oldData = await load(); // old data could not exist
+    if (isValid(oldData, 999999999)) { 
+        const newData = await getFollows(oldData.user.id);
+    
+        save({
+            user: oldData.user,
+            streams: newData,
+            age: new Date().getTime()
+        });
+    
+        let result = newData.filter(o1 => {
+            return !oldData.streams.some(o2 => o1.user_name === o2.user_name);
+        });
+    
+        if (typeof chrome !== "undefined") {
+            if (typeof browser !== "undefined") {
+                browser.browserAction.setBadgeText({text: (newData.length).toString()})
+            } else {
+                chrome.action.setBadgeText({text: (newData.length).toString()})
+            }
+        }
+    
+        if (result.length > 0) {
+            for (let stream of result) {
+                chrome.notifications.create(undefined, {
+                    iconUrl: "../icons/icon128.png",
+                    title: "InstantTwitch",
+                    type: "basic",
+                    message: stream.user_name + " is now live"
+                })
+            }
+            
+        }
+    }
+})
