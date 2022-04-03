@@ -13,7 +13,6 @@
     const loadData = async () => {
         let response = await load();
         data.set(response);
-        console.log(response)
         
         if (isValid(cache, 10)) { // 10 min data lifetime
             filteredStreams = cache.streams;
@@ -24,8 +23,6 @@
             
             if (validToken?.expires_in > 0) {
                 let user = await getUser();
-
-                console.log(await getFollows(user.id))
                 
                 data.set({
                     age: new Date().getTime(),
