@@ -20,7 +20,6 @@ jobs:
       - run: npm run build_chrome
       - run: npm run build_firefox
       - run: cd dist_chrome/ && zip -r ../chrome_build.zip *
-      - run: cd dist_firefox/ && zip -r ../firefox_build.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -41,12 +40,18 @@ jobs:
           asset_path: ./chrome_build.zip
           asset_name: chrome_build.zip
           asset_content_type: application/zip
+      - name: "web-ext build"
+        id: web-ext-build
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: build
+          source: dist_firefox/
       - name: "web-ext sign"
         id: web-ext-sign
         uses: kewisch/action-web-ext@v1
         with:
           cmd: sign
-          source: ./firefox_build.zip
+          source: ${{ steps.web-ext-build.outputs.target }}
           channel: unlisted
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
