@@ -20,7 +20,7 @@
 
 
 <main>
-    <div class="flex justify-between p-1 w-full border-b-[1px] border-lightborder bg-foreground">
+    <div class="flex justify-between p-1 w-full border-b-[1px] border-lightborder bg-foreground relative">
         <div class="flex flex-row">
             <input bind:value={value} type="text" placeholder="Search" class="bg-background h-6 rounded-md pl-2 text-strongtext mr-2">
             <svg on:click={_ => dispatch('refresh', {})} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-lighttext hover:fill-strongtext transition-colors" viewBox="0 0 20 20" fill="currentColor">
@@ -28,9 +28,9 @@
             </svg>
         </div>
         {#await promise}
-            <User user={user}/>
+            <User on:logout={_ => dispatch('logout', {})} user={user}/>
         {:then}
-            <User user={user}/>
+            <User on:logout={_ => dispatch('logout', {})} user={user}/>
         {:catch}
             <button class="bg-twitch rounded-md px-3 border-[1px] border-lightborder text-strongtext font-semibold" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
                 Login

@@ -13,6 +13,7 @@
     const loadData = async () => {
         let response = await load();
         data.set(response);
+        console.log(response)
         
         if (isValid(cache, 10)) { // 10 min data lifetime
             filteredStreams = cache.streams;
@@ -22,8 +23,6 @@
             let validToken = await checkAccessToken();
             
             if (validToken?.expires_in > 0) {
-                console.log("getting user")
-
                 let user = await getUser();
 
                 console.log(await getFollows(user.id))
@@ -61,10 +60,18 @@
         })
     }
 
+    const logout = () => {
+        console.log("heyda")
+        chrome.storage.local.clear();
+        data.set({});
+
+        promise = loadData();
+    }
+
 </script>
 
 <main class="w-[450px] h-[600px] bg-background overflow-hidden flex flex-col border-none">
-    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={_ => promise = refreshStreams()} promise={promise}/>
+    <Navbar on:logout={logout} on:inputchange={res => filterStreams(res)} on:refresh={_ => promise = refreshStreams()} promise={promise}/>
 
     <div class="overflow-y-scroll flex-1">
         {#await promise}
