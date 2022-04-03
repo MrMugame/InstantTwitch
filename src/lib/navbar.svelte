@@ -28,9 +28,9 @@
             </svg>
         </div>
         {#await promise}
-            <User on:logout={_ => dispatch('logout', {})} user={user}/>
+            <User on:logout={_ => dispatch('logout', {})} on:pagechange={res => dispatch('pagechange', res.detail)} user={user}/>
         {:then}
-            <User on:logout={_ => dispatch('logout', {})} user={user}/>
+            <User on:logout={_ => dispatch('logout', {})} on:pagechange={res => dispatch('pagechange', res.detail)} user={user}/>
         {:catch}
             <button class="bg-twitch rounded-md px-3 border-[1px] border-lightborder text-strongtext font-semibold m-1" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
                 Login

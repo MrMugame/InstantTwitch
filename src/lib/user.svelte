@@ -13,7 +13,7 @@
     </div>
 
     <div class="absolute bg-background border-[1px] border-lightborder w-32 text-md text-strongtext font-semibold top-full right-0 hidden dropdown">
-        <h2 class="p-1 hover:bg-twitch select-none">Settings</h2>
+        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => dispatch('pagechange', {page: "settings"})}>Settings</h2>
         <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => dispatch('logout', {})}>Logout</h2>
     </div>
 </div>
