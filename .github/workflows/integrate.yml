@@ -46,7 +46,7 @@ jobs:
         uses: kewisch/action-web-ext@v1
         with:
           cmd: sign
-          source: ./chrome_build.zip
+          source: ./firefox_build.zip
           channel: unlisted
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
