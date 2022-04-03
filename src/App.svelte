@@ -4,11 +4,9 @@
     import { data, isValid, load, save } from "./twitch/cache.js"
     import { getUser, getFollows, checkAccessToken } from "./twitch/api";
     
-    let validAccessToken = false;
     let filteredStreams = [];
     let cache = {};
 
-    
     data.subscribe(val => cache = val);
     
     
@@ -17,15 +15,13 @@
         data.set(response);
         
         if (isValid(cache, 10)) { // 10 min data lifetime
-            validAccessToken = true;
             filteredStreams = cache.streams;
         } else {
             console.log("fetching");
             
             let validToken = await checkAccessToken();
-            validAccessToken = (validToken?.status == 200 && validToken?.data?.expires_in > 0);
             
-            if (validAccessToken) {
+            if (validToken?.status == 200 && validToken?.data?.expires_in > 0) {
                 let user = await getUser();
                 
                 data.set({
@@ -64,7 +60,7 @@
 </script>
 
 <main class="w-[450px] h-[600px] bg-background overflow-hidden flex flex-col border-none">
-    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={_ => promise = refreshStreams()} validAccessToken={validAccessToken}/>
+    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={_ => promise = refreshStreams()} promise={promise}/>
 
     <div class="overflow-y-scroll flex-1">
         {#await promise}
@@ -76,6 +72,6 @@
         {:catch}
             <h1 class="text-center font-roboto text-xl font-bold mt-10 text-lighttext">Login first</h1>
         {/await}
-
     </div>
+
 </main>
