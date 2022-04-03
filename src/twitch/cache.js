@@ -12,10 +12,7 @@ export const isValid = (data, minutes) => {
 
 export const load = async () => {
     return new Promise((resolve, reject) => chrome.storage.local.get(["data_cache"], res => {
-        if (res.data_cache == undefined) {
-            res.data_cache = {};
-        }
-        resolve(res.data_cache);
+        resolve(res.data_cache || {});
     }))
 }
 

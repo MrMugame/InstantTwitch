@@ -4,54 +4,44 @@
     import { data, isValid, load, save } from "./twitch/cache.js"
     import { getUser, getFollows, checkAccessToken } from "./twitch/api";
     
-    let loading = true;
     let validAccessToken = false;
     let filteredStreams = [];
     let cache = {};
 
     
     data.subscribe(val => cache = val);
-
-    load().then(res => {
-        data.set(res)
-
-        if (!isValid(cache, 10)) { // 10 min data lifetime
-            console.log("fetching")
-            checkAccessToken().then(async (res) => {
-                validAccessToken = (res?.status == 200 && res?.data?.expires_in > 0);
-                if (validAccessToken) {
-                    let user = await getUser();
-                    data.set({
-                        age: new Date().getTime(),
-                        user: user,
-                        streams: await getFollows(user.id)
-                    });
-                    save(cache);
-                    filteredStreams = cache.streams;
-                    loading = false;
-                }
-            }).catch(e => {
-                validAccessToken = false;
-                loading = true;
-            })
-        } else {
-            loading = false;
+    
+    
+    const loadData = async () => {
+        let response = await load();
+        data.set(response);
+        
+        if (isValid(cache, 10)) { // 10 min data lifetime
             validAccessToken = true;
             filteredStreams = cache.streams;
+        } else {
+            console.log("fetching");
+            
+            let validToken = await checkAccessToken();
+            validAccessToken = (validToken?.status == 200 && validToken?.data?.expires_in > 0);
+            
+            if (validAccessToken) {
+                let user = await getUser();
+                
+                data.set({
+                    age: new Date().getTime(),
+                    user: user,
+                    streams: await getFollows(user.id)
+                });
+                save(cache);
+                filteredStreams = cache.streams;
+            } else {
+                throw new Error();
+            }
         }
-    });
-
-
-
-    const filterStreams = async (res) => {
-        const searchTerm = res.detail.value.toLowerCase();
-        filteredStreams = cache.streams.filter(stream => {
-            return stream.user_name.toLowerCase().includes(searchTerm)
-        })
     }
-
+    
     const refreshStreams = async () => {
-        loading = true;
         data.set({
             user: cache.user,
             streams: await getFollows(cache.user.id),
@@ -59,23 +49,33 @@
         });
         save(cache);
         filteredStreams = cache.streams;
-        loading = false;
+    }
+    
+
+    let promise = loadData();
+    
+    const filterStreams = async (res) => {
+        const searchTerm = res.detail.value.toLowerCase();
+        filteredStreams = cache.streams.filter(stream => {
+            return stream.user_name.toLowerCase().includes(searchTerm)
+        })
     }
 
 </script>
 
 <main class="w-[450px] h-[600px] bg-background overflow-hidden flex flex-col border-none">
-    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={refreshStreams} validAccessToken={validAccessToken}/>
+    <Navbar on:inputchange={res => filterStreams(res)} on:refresh={_ => promise = refreshStreams()} validAccessToken={validAccessToken}/>
 
     <div class="overflow-y-scroll flex-1">
-        {#if !loading && validAccessToken}
+        {#await promise}
+            <h1 class="text-center font-roboto text-xl font-bold mt-10 text-lighttext">Loading...</h1>
+        {:then}
             {#each filteredStreams as stream}
                 <Stream stream={stream}/>
             {/each}
-        {:else if loading && validAccessToken}
-            <h1 class="text-center font-roboto text-xl font-bold mt-10 text-lighttext">Loading...</h1>
-        {:else}
+        {:catch}
             <h1 class="text-center font-roboto text-xl font-bold mt-10 text-lighttext">Login first</h1>
-        {/if}
+        {/await}
+
     </div>
 </main>
