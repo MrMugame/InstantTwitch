@@ -21,8 +21,12 @@
             
             let validToken = await checkAccessToken();
             
-            if (validToken?.status == 200 && validToken?.data?.expires_in > 0) {
+            if (validToken?.expires_in > 0) {
+                console.log("getting user")
+
                 let user = await getUser();
+
+                console.log(await getFollows(user.id))
                 
                 data.set({
                     age: new Date().getTime(),

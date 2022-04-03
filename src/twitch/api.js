@@ -1,7 +1,5 @@
 //import axios from "axios"
 
-import axios from "axios"
-
 const CONSTANTS = {
     CLIENTID: "i8uqx7hag4dcu1ipxqeggxyn1ys3om"
 }
@@ -21,31 +19,33 @@ const getHeaders = async () => {
 
 const getUser = async () => {
     return new Promise(async (resolve, reject) => {
-        axios.get("https://api.twitch.tv/helix/users", {
+        fetch("https://api.twitch.tv/helix/users", {
             headers: await getHeaders()
         })
-        .then(res => resolve(res.data.data[0]));
+        .then(response => response.json())
+        .then(res => resolve(res.data[0]));
     })
 }
 
 const getFollows = async (userID) => {
     return new Promise(async (resolve, reject) => {
-        axios.get("https://api.twitch.tv/helix/streams/followed?user_id=" + userID, {
+        fetch("https://api.twitch.tv/helix/streams/followed?user_id=" + userID, {
             headers: await getHeaders()
         })
-        .then(res => resolve(res.data.data));
+        .then(response => response.json())
+        .then(res => resolve(res.data));
     });
 }
 
 const checkAccessToken = async () => {
     return new Promise(async (resolve, reject) => {
-        axios.get("https://id.twitch.tv/oauth2/validate", {
+        fetch("https://id.twitch.tv/oauth2/validate", {
             headers: {
                 "Authorization": "Bearer " + await getAccessToken()
             }
         })
-        .then(res => resolve(res))
-        .catch(err => reject(err.response));
+        .then(async response => resolve(await response.json()))
+        .catch(err => reject(err))
     })
 }
 

@@ -1,10 +1,9 @@
+import { load } from "./twitch/cache.js"
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.data != "OAUTH") { return }
-
-    makeURL();
 
     chrome.tabs.create({ url: makeURL() }, tab => {
         chrome.tabs.onUpdated.addListener((tabId, info) => {
@@ -34,13 +33,4 @@ const makeURL = () => {
     return url.href
 }
 
-// chrome.alarms.create("update", { periodInMinutes: 1 }); // 1 minute update cycle
 
-
-// chrome.alarms.onAlarm.addListener(alarm => {
-//     if (alarm.name !== "update") { return }
-
-//     console.log("alarm");
-    
-
-// })
