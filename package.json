@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build_chrome": "rm -rf dist_chrome && vite build --emptyOutDir && mv dist dist_chrome && cp src/chrome.manifest.json dist_chrome/manifest.json && cp src/background.js dist_chrome/assets/ && cp -r src/assets/icons dist_chrome/",
-    "build_firefox": "rm -rf dist_firefox && vite build --emptyOutDir && mv dist dist_firefox && cp src/firefox.manifest.json dist_firefox/manifest.json && cp src/background.js dist_firefox/assets/ && cp -r src/assets/icons dist_firefox/",
+    "build_chrome": "rm -rf dist_chrome && vite build --emptyOutDir -c vite.frontend.config.js  && vite build -c vite.background.config.js && mv dist dist_chrome && cp src/chrome.manifest.json dist_chrome/manifest.json && mv dist_chrome/background.js dist_chrome/assets/ && cp -r src/assets/icons dist_chrome/",
+    "build_firefox": "rm -rf dist_firefox && vite build --emptyOutDir -c vite.frontend.config.js  && && vite build -c vite.background.config.js mv dist dist_firefox && cp src/firefox.manifest.json dist_firefox/manifest.json && mv dist_firefox/background.js dist_firefox/assets/ && cp -r src/assets/icons dist_firefox/",
+    "build-background": "vite build -c vite.background.config.js",
     "preview": "vite preview",
     "clean": "rm -rf dist_chrome && rm -rf dist_firefox"
   },

@@ -33,3 +33,14 @@ const makeURL = () => {
 
     return url.href
 }
+
+// chrome.alarms.create("update", { periodInMinutes: 1 }); // 1 minute update cycle
+
+
+// chrome.alarms.onAlarm.addListener(alarm => {
+//     if (alarm.name !== "update") { return }
+
+//     console.log("alarm");
+    
+
+// })

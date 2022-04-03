@@ -1,7 +1,7 @@
 {
     "name": "InstantTwitch",
     "description": "Get updates on all your streamers and games on Twitch",
-    "version": "0.2.3",
+    "version": "0.3.3",
     "manifest_version": 3,
     "permissions": [
         "tabs",
