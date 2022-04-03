@@ -41,6 +41,16 @@ jobs:
           asset_path: ./chrome_build.zip
           asset_name: chrome_build.zip
           asset_content_type: application/zip
+      - name: "web-ext sign"
+        id: web-ext-sign
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: sign
+          source: ./chrome_build.zip
+          channel: unlisted
+          apiKey: ${{ secrets.AMO_SIGN_KEY }}
+          apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
+          timeout: 900000
       - name: Upload Release Asset Firefox
         id: upload-release-asset-firefox
         uses: actions/upload-release-asset@v1
@@ -48,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./firefox_build.zip
-          asset_name: firefox_build.zip
+          asset_path: ${{ steps.web-ext-sign.outputs.target }}
+          asset_name: firefox_build.xpi
           asset_content_type: application/zip
