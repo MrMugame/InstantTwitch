@@ -8,7 +8,7 @@ const defaultSettings = {
 
 export const loadSettings = async () => {
     return new Promise((resolve, reject) => chrome.storage.local.get(["settings"], res => {
-        if (res.settings.valid == true) {
+        if (res.settings?.valid == true) {
             resolve(res.settings);
         } else {
             resolve(defaultSettings);
