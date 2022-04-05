@@ -53,7 +53,7 @@ chrome.alarms.onAlarm.addListener(async alarm => {
         let brokenRequest = false;
     
         for (let stream of result) {
-            if (stream.user_name != undefined) {
+            if (stream.user_name != "") {
                 sendNotification(stream.user_name);
             } else {
                 brokenRequest = true;
