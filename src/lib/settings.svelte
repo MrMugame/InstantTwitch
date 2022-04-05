@@ -41,5 +41,11 @@
         <Selectsetting name="Update interval:" options={intervalOptions} bind:selected={settings.fetchCycle}/>
 
         <Selectsetting name="Data lifetime:" options={intervalOptions} bind:selected={settings.dataLifeTime}/>
+
+        <div class="flex items-center my-2">
+            <h3 class="text-base font-roboto text-strongtext font-semibold">Notifications:</h3>
+            <input class="mx-5 accent-twitch" type="checkbox" name="scales" bind:checked={settings.notifications}>
+        </div>
+
     {/if}
 </div>

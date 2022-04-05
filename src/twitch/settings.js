@@ -1,6 +1,7 @@
 const defaultSettings = {
     dataLifeTime: 10,
     fetchCycle: 2.5,
+    notifications: true
 }
 
 

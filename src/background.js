@@ -55,6 +55,9 @@ chrome.alarms.onAlarm.addListener(async alarm => {
     
         updateBadgeText(newData.length);
 
+        let settings = await loadSettings();
+        if (settings.notifications == false) { return }
+
         let brokenRequest = false;
     
         for (let stream of result) {
