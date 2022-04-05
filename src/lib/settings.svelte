@@ -7,6 +7,7 @@
     let loading = true;
 
     loadSettings().then(res => {
+        console.log("response", res)
         settings = res;
         loading = false;
     });
