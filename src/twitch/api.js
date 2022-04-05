@@ -17,7 +17,7 @@ const getHeaders = async () => {
     }
 }
 
-const getUser = async () => {
+export const getUser = async () => {
     return new Promise(async (resolve, reject) => {
         fetch("https://api.twitch.tv/helix/users", {
             headers: await getHeaders()
@@ -27,7 +27,7 @@ const getUser = async () => {
     })
 }
 
-const getFollows = async (userID) => {
+export const getFollows = async (userID) => {
     return new Promise(async (resolve, reject) => {
         fetch("https://api.twitch.tv/helix/streams/followed?user_id=" + userID, {
             headers: await getHeaders()
@@ -37,7 +37,7 @@ const getFollows = async (userID) => {
     });
 }
 
-const checkAccessToken = async () => {
+export const checkAccessToken = async () => {
     return new Promise(async (resolve, reject) => {
         fetch("https://id.twitch.tv/oauth2/validate", {
             headers: {
@@ -48,6 +48,3 @@ const checkAccessToken = async () => {
         .catch(err => reject(err))
     })
 }
-
-
-export { getUser, getFollows, checkAccessToken }

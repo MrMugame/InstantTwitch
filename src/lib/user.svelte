@@ -1,9 +1,14 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import { data } from "/twitch/cache.js";
+    import { page } from "/twitch/page.js";
 
-    export let user;
+    let dispatch = createEventDispatcher();
 
-    const dispatch = createEventDispatcher();
+    let user;
+
+    data.subscribe(value => user = value.user || {});
+
 </script>
 
 <div class="outside py-1">
@@ -13,8 +18,8 @@
     </div>
 
     <div class="absolute bg-background border-[1px] border-lightborder w-32 text-sm text-strongtext font-semibold top-full right-0 hidden dropdown">
-        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => dispatch('pagechange', {page: "settings"})}>Settings</h2>
-        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => dispatch('logout', {})}>Logout</h2>
+        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => page.set("settings")}>Settings</h2>
+        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => dispatch("logout", {})}>Logout</h2>
     </div>
 </div>
 
