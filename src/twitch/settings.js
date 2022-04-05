@@ -17,14 +17,10 @@ export const loadSettings = async () => {
 }
 
 export const saveSettings = (data) => {
-    //if (data.valid == false) { return }
-
     let result = {
         ...data,
         valid: true
     }
-
-    console.log("save", result)
 
     chrome.storage.local.set({settings: result});
  
