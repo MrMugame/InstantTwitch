@@ -1,8 +1,15 @@
 <script>
     import { page } from "/twitch/page.js";
     import Selectsetting from "./selectsetting.svelte";
-    
-    let selected;
+    import { loadSettings, saveSettings } from "/twitch/settings";
+
+    let settings;
+    let loading = true;
+
+    loadSettings().then(res => {
+        settings = res;
+        loading = false;
+    });
 
     let intervalOptions = [
         1,
@@ -12,6 +19,12 @@
         15,
         30,
     ]
+
+    $: {
+        if (settings != undefined) {
+            saveSettings(settings);
+        }
+    }
 
 </script>
 
@@ -24,7 +37,9 @@
         <h2 class="font-roboto text-lighttext font-semibold text-base mx-6">Settings</h2>
     </div>
 
-    <Selectsetting name="Update interval:" options={intervalOptions} bind:selected={selected}/>
+    {#if !loading}
+        <Selectsetting name="Update interval:" options={intervalOptions} bind:selected={settings.fetchCycle}/>
 
-    <Selectsetting name="Data lifetime:" options={intervalOptions} bind:selected={selected}/>
+        <Selectsetting name="Data lifetime:" options={intervalOptions} bind:selected={settings.dataLifeTime}/>
+    {/if}
 </div>

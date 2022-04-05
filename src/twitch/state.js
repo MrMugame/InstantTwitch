@@ -1,6 +1,7 @@
 import { checkAccessToken, getFollows, getUser } from './api';
 import { data, isValid, load, save } from './cache';
 import { page } from './page';
+import { loadSettings } from './settings';
 import { updateBadgeText } from './updates';
 
 let cache;
@@ -27,9 +28,10 @@ const refreshStreams = async () => {
 const loadData = async () => {
     let response = await load();
     data.set(response);
+
+    let settings = await loadSettings();
     
-    if (!isValid(cache, 10)) { // 10 min lifetime
-        console.log("fetching");
+    if (!isValid(cache, settings.dataLifeTime)) {
         
         let validToken = await checkAccessToken();
         

@@ -1,5 +1,6 @@
 import { getFollows } from "./twitch/api.js";
 import { isValid, load, save } from "./twitch/cache.js"
+import { loadSettings } from "./twitch/settings.js";
 import { sendNotification, updateBadgeText } from "./twitch/updates.js";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
@@ -35,7 +36,11 @@ const makeURL = () => {
     return url.href
 }
 
-chrome.alarms.create("update", { periodInMinutes: 2.5 }); // 2.5 minute update cycle
+loadSettings().then(res => {
+    console.log(res.fetchCycle)
+    chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
+})
+
 
 chrome.alarms.onAlarm.addListener(async alarm => {
     if (alarm.name !== "update") { return }
