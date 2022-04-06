@@ -5,9 +5,9 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 ## Todo
 
 - [x] Basic display of the currently live streamers
-- [ ] Settings
+- [x] Settings
 - [ ] Lightmode
-- [ ] Notifications
+- [x] Notifications
 - [ ] Full Twitch search
 - [x] Firefox support
 
