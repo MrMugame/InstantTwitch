@@ -8,15 +8,11 @@
 
     let input;
 
-    let cache;
-    data.subscribe(val => cache = val);
-    
-
     const filterStreams = async (res) => {
         const searchTerm = input.toLowerCase();
-        filteredStreams = cache.streams.filter(stream => {
+        filteredStreams = $data.streams.filter(stream => {
             return stream.user_name.toLowerCase().includes(searchTerm)
-        })
+        });
     }
 </script>
 
