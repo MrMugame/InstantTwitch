@@ -49,7 +49,6 @@ loadSettings().then(res => {
 chrome.alarms.onAlarm.addListener(async alarm => {
     if (alarm.name !== "update") { return }
 
-
     const oldData = await load();
 
     if (!isValid(oldData, 60 * 10)) { return }
