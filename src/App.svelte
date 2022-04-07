@@ -14,8 +14,12 @@
     let promise = loadData();
 
     let darkmode = false;
-    loadSettings().then(res => darkmode = res.darkmode);
-
+    
+    const reloadSettings = () => {
+        loadSettings().then(res => darkmode = res.darkmode);
+    }
+    
+    reloadSettings();
 </script>
 
 <main class={darkmode ? 'dark' : ''}>
@@ -35,7 +39,7 @@
                 {/await}
             </div>
         {:else if $page === "settings"}
-            <Settings/>
+            <Settings on:reload={reloadSettings} />
         {/if}
     </div>
 </main>

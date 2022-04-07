@@ -1,7 +1,10 @@
 <script>
-    import { page } from "/twitch/page.js";
     import Selectsetting from "./selectsetting.svelte";
+    import { createEventDispatcher } from "svelte";
+    import { page } from "/twitch/page.js";
     import { loadSettings, saveSettings } from "/twitch/settings";
+
+    let dispatch = createEventDispatcher();
 
     let settings;
     let loading = true;
@@ -24,6 +27,7 @@
         if (settings != undefined) {
             saveSettings(settings);
         }
+        dispatch("reload", {});
     }
 
 </script>
