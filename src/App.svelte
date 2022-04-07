@@ -18,7 +18,6 @@
     const reloadSettings = () => {
         loadSettings().then(res => darkmode = res.darkmode);
     }
-    
     reloadSettings();
 </script>
 

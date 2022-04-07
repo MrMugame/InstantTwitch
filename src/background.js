@@ -41,42 +41,46 @@ const makeURL = () => {
 
 loadSettings().then(res => {
     console.log(res.fetchCycle)
-    chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
+    // chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
+    chrome.alarms.create("update", { periodInMinutes: 0.2 });
 })
 
 
 chrome.alarms.onAlarm.addListener(async alarm => {
     if (alarm.name !== "update") { return }
-    
+
+
     const oldData = await load();
-    if (isValid(oldData, 999999999)) { 
-        const newData = await getFollows(oldData.user.id);
-    
-        let result = newData.filter(o1 => {
-            return !oldData.streams.some(o2 => o1.user_name === o2.user_name);
-        });
-    
-        updateBadgeText(newData.length);
 
-        let settings = await loadSettings();
-        if (settings.notifications == false) { return }
+    if (!isValid(oldData, 60 * 10)) { return }
 
-        let brokenRequest = false;
+    const newData = await getFollows(oldData.user.id);
+
+    updateBadgeText(newData.length);
     
-        for (let stream of result) {
-            if (stream.user_name != "") {
-                sendNotification(stream.user_name);
-            } else {
-                brokenRequest = true;
-            }
-        }
+    let settings = await loadSettings();
+    if (settings.notifications == false) { return }
+    
+    let cache = await new Promise(resolve => chrome.storage.local.get(["notification_cache"], res => {
+        resolve(res.notification_cache || []);
+    }));
+    
+    cache = cache.filter(e1 => {
+        return newData.some(e2 => e1 === e2.id);
+    });
 
-        if (!brokenRequest) {
-            save({
-                user: oldData.user,
-                streams: newData,
-                age: new Date().getTime()
-            });
+
+    let result = newData.filter(e1 => {
+        return !cache.includes(e1.id);
+    });
+
+
+    for (let stream of result) {
+        if (stream.user_name != "") {
+            cache.push(stream.id);
+            sendNotification(stream.user_name);
         }
     }
+
+    chrome.storage.local.set({notification_cache: cache});
 })
