@@ -16,10 +16,6 @@
     let darkmode = false;
     loadSettings().then(res => darkmode = res.darkmode);
 
-    $: {
-        console.log(darkmode)
-    }
-
 </script>
 
 <main class={darkmode ? 'dark' : ''}>
