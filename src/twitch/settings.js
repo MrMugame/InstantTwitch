@@ -2,6 +2,7 @@ const defaultSettings = {
     dataLifeTime: 10,
     fetchCycle: 2.5,
     notifications: true,
+    darkmode: true,
     valid: false
 }
 
@@ -9,7 +10,7 @@ const defaultSettings = {
 export const loadSettings = async () => {
     return new Promise((resolve, reject) => chrome.storage.local.get(["settings"], res => {
         if (res.settings?.valid == true) {
-            resolve(res.settings);
+            resolve({...defaultSettings, ...res.settings});
         } else {
             resolve(defaultSettings);
         }
