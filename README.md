@@ -6,7 +6,7 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 
 - [x] Basic display of the currently live streamers
 - [x] Settings
-- [ ] Lightmode
+- [x] Lightmode
 - [x] Notifications
 - [ ] Full Twitch search
 - [x] Firefox support
