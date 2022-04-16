@@ -8,11 +8,10 @@
     let dispatch = createEventDispatcher();
 
     let settings;
-    let loading = true;
-
-    loadSettings().then(res => {
+    
+    let promise = loadSettings()
+    promise.then(res => {
         settings = res;
-        loading = false;
     });
 
     let intervalOptions = [1, 2.5, 5, 10, 15, 30]
@@ -35,7 +34,10 @@
         <h2 class="font-roboto dark:text-lighttext text-lightlighttext font-semibold text-base mx-6">Settings</h2>
     </div>
 
-    {#if !loading}
+
+    {#await promise}
+        <h1>test</h1>
+    {:then}
         <Selectsetting name="Update interval" options={intervalOptions} bind:selected={settings.fetchCycle}/>
 
         <Selectsetting name="Data lifetime" options={intervalOptions} bind:selected={settings.dataLifeTime}/>
@@ -43,5 +45,5 @@
         <Checkboxsetting name="Notifications" bind:checked={settings.notifications}/>
 
         <Checkboxsetting name="Darkmode" bind:checked={settings.darkmode}/>
-    {/if}
+    {/await}
 </div>
