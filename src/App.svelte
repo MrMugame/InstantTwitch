@@ -25,12 +25,10 @@
         } else if (settings.sortingOption === SORTING.ALPHABETICALLY) {
             filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
         } else if (settings.sortingOption === SORTING.REVERSEALPHABETICALLY) {
-            filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
-            filteredStreams.reverse();
+            filteredStreams.sort((a, b) => b.user_name.localeCompare(a.user_name));
         }
     }
     reloadSettings();
-
 
 </script>
 
