@@ -9,10 +9,8 @@
 <div class="flex items-center my-2">
     <div class="mr-5 w-[50px] flex justify-end">
         <select bind:value={selected} class="bg-twitch text-lighttext rounded-md h-5 text-xs">
-            {#each options as option}
-            <option value={option}>
-                {option}min
-            </option>
+            {#each Object.entries(options) as [title, value]}
+                <option value={value}>{title}</option>
             {/each}
         </select>
     </div>

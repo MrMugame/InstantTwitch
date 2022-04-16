@@ -8,13 +8,20 @@
     let dispatch = createEventDispatcher();
 
     let settings;
-    
+
     let promise = loadSettings()
     promise.then(res => {
         settings = res;
     });
 
-    let intervalOptions = [1, 2.5, 5, 10, 15, 30]
+    let intervalOptions = {
+        "1min": 1, 
+        "2.5min": 2.5, 
+        "5min": 5, 
+        "10min": 10, 
+        "15min": 15, 
+        "30min": 30
+    }
 
     $: {
         if (settings != undefined) {
