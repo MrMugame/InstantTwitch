@@ -1,8 +1,18 @@
+const SORTING = {
+    SMALLTOLARGE: "SMALLTOLARGE",
+    LARGETOSMALL: "LARGETOSMALL",
+    ALPHABETICALLY: "ALPHABETICALLY",
+    REVERSEALPHABETICALLY: "REVERSEALPHABETICALLY",
+}
+export { SORTING };
+
+
 const defaultSettings = {
     dataLifeTime: 10,
     fetchCycle: 2.5,
     notifications: true,
     darkmode: true,
+    sortingOption: SORTING.LARGETOSMALL,
     valid: false
 }
 

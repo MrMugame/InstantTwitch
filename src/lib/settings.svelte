@@ -3,7 +3,7 @@
     import Checkboxsetting from "./checkboxsetting.svelte";
     import { createEventDispatcher } from "svelte";
     import { page } from "/twitch/page.js";
-    import { loadSettings, saveSettings } from "/twitch/settings";
+    import { loadSettings, saveSettings, SORTING } from "/twitch/settings";
 
     let dispatch = createEventDispatcher();
 
@@ -21,6 +21,13 @@
         "10min": 10, 
         "15min": 15, 
         "30min": 30
+    }
+
+    let sortingOptions = {
+        "small to large": SORTING.SMALLTOLARGE, 
+        "large to small": SORTING.LARGETOSMALL, 
+        "alphabetically": SORTING.ALPHABETICALLY,
+        "reverse alphabetically": SORTING.REVERSEALPHABETICALLY
     }
 
     $: {
@@ -52,5 +59,7 @@
         <Checkboxsetting name="Notifications" bind:checked={settings.notifications}/>
 
         <Checkboxsetting name="Darkmode" bind:checked={settings.darkmode}/>
+
+        <Selectsetting name="Sorting" options={sortingOptions} bind:selected={settings.sortingOption}/>
     {/await}
 </div>

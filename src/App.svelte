@@ -5,7 +5,7 @@
     import { page } from "./twitch/page";
     import { loadData } from "./twitch/state";
     import { data } from "./twitch/cache";
-    import { loadSettings } from "./twitch/settings";
+    import { loadSettings, SORTING } from "./twitch/settings";
     
     let filteredStreams = [];
 
@@ -13,15 +13,28 @@
 
     let promise = loadData();
 
-    let darkmode = false;
+    let settings = {};
     
-    const reloadSettings = () => {
-        loadSettings().then(res => darkmode = res.darkmode);
+    const reloadSettings = async () => {
+        settings = await loadSettings();
+        
+        if (settings.sortingOption === SORTING.LARGETOSMALL) {
+            filteredStreams.sort((a, b) => a.viewer_count < b.viewer_count ? 1 : -1);
+        } else if (settings.sortingOption === SORTING.SMALLTOLARGE) {
+            filteredStreams.sort((a, b) => a.viewer_count > b.viewer_count ? 1 : -1);
+        } else if (settings.sortingOption === SORTING.ALPHABETICALLY) {
+            filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
+        } else if (settings.sortingOption === SORTING.REVERSEALPHABETICALLY) {
+            filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
+            filteredStreams.reverse();
+        }
     }
     reloadSettings();
+
+
 </script>
 
-<main class={darkmode ? 'dark' : ''}>
+<main class={settings.darkmode ? 'dark' : ''}>
     <div class="w-[450px] h-[600px] dark:bg-background bg-lightbackground overflow-hidden flex flex-col border-none">
         <Navbar bind:filteredStreams={filteredStreams} bind:promise={promise}/>
     
