@@ -1,5 +1,5 @@
 import { getFollows } from "./twitch/api.js";
-import { isValid, load, save } from "./twitch/cache.js"
+import { isValid, load, save } from "./stores/cache.js"
 import { loadSettings } from "./twitch/settings.js";
 import { sendNotification, updateBadgeText } from "./twitch/updates.js";
 
@@ -40,9 +40,9 @@ const makeURL = () => {
 }
 
 loadSettings().then(res => {
-    console.log(res.fetchCycle)
-    // chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
-    chrome.alarms.create("update", { periodInMinutes: 0.2 });
+    //console.log(res.fetchCycle)
+    chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
+    //chrome.alarms.create("update", { periodInMinutes: 0.2 });
 })
 
 
@@ -82,6 +82,7 @@ chrome.alarms.onAlarm.addListener(async alarm => {
         }
     }
 
+    // empty string is lager than one but empty
     if (result.length > 0) {
         notification_string = notification_string.substring(0, notification_string.lastIndexOf(","));
 

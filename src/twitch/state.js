@@ -1,6 +1,5 @@
 import { checkAccessToken, getFollows, getUser } from './api';
-import { data, isValid, load, save } from './cache';
-import { page } from './page';
+import { data, isValid, load, save } from '../stores/cache';
 import { loadSettings } from './settings';
 import { updateBadgeText } from './updates';
 
@@ -10,7 +9,7 @@ data.subscribe(val => cache = val);
 const logout = () => {
     chrome.storage.local.clear();
     data.set({});
-    page.set("streams");
+    //page.set("streams");
 
     return loadData();
 }
