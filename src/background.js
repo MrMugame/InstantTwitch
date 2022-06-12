@@ -2,6 +2,7 @@ import { getFollows } from "./twitch/api.js";
 import { data } from "./stores/cache.js"
 import { loadSettings } from "/twitch/settings.js";
 import { sendNotification, updateBadgeText } from "./twitch/updates.js";
+import { get } from 'svelte/store';
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
@@ -50,10 +51,12 @@ loadSettings().then(res => {
 chrome.alarms.onAlarm.addListener(async alarm => {
     if (alarm.name !== "update") { return }
 
-    const oldData = await data.loadData();
+    await data.loadData();
 
-    if (!data.isValid()) { return }
+    if (!(await data.isValid())) { return }
 
+    const oldData = get(data);
+    
     const newData = await getFollows(oldData.user.id);
 
     updateBadgeText(newData.length || "");
