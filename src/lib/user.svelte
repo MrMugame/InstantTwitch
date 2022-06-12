@@ -1,9 +1,7 @@
 <script>
     import { push } from 'svelte-spa-router'
-    import { createEventDispatcher } from "svelte";
+    import { promise } from "../stores/promise"
     import { data } from "../stores/cache";
-
-    let dispatch = createEventDispatcher();
 </script>
 
 <div class="outside py-1 mr-2">
@@ -14,7 +12,7 @@
 
     <div class="absolute dark:bg-background bg-lightbackground border-[1px] dark:border-lightborder w-32 text-sm dark:text-strongtext text-lightstrongtext font-semibold top-full right-0 hidden dropdown">
         <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => push('/settings')}>Settings</h2>
-        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => dispatch("logout", {})}>Logout</h2>
+        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => $promise = data.logout()}>Logout</h2>
     </div>
 </div>
 

@@ -1,11 +1,12 @@
 import { getFollows } from "./twitch/api.js";
-import { isValid, load, save } from "./stores/cache.js"
-import { loadSettings } from "./twitch/settings.js";
+import { data } from "./stores/cache.js"
+import { loadSettings } from "/twitch/settings.js";
 import { sendNotification, updateBadgeText } from "./twitch/updates.js";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log("messa")
     if (request.data != "OAUTH") { return }
 
     return new Promise(resolve => {
@@ -49,9 +50,9 @@ loadSettings().then(res => {
 chrome.alarms.onAlarm.addListener(async alarm => {
     if (alarm.name !== "update") { return }
 
-    const oldData = await load();
+    const oldData = await data.loadData();
 
-    if (!isValid(oldData, 60 * 10)) { return }
+    if (!data.isValid()) { return }
 
     const newData = await getFollows(oldData.user.id);
 
