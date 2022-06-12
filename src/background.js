@@ -82,8 +82,7 @@ chrome.alarms.onAlarm.addListener(async alarm => {
         }
     }
 
-    // empty string is lager than one but empty
-    if (result.length > 0) {
+    if (notification_string != "") {
         notification_string = notification_string.substring(0, notification_string.lastIndexOf(","));
 
         notification_string = notification_string.replace(/,(?!.*,)/, " and")
