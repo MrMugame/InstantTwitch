@@ -1,7 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { data } from "/twitch/cache.js";
-    import { page } from "/twitch/page.js";
+    import { data } from "/twitch/cache";
+    import { page } from "/twitch/page";
 
     let dispatch = createEventDispatcher();
 

@@ -55,7 +55,7 @@ chrome.alarms.onAlarm.addListener(async alarm => {
 
     const newData = await getFollows(oldData.user.id);
 
-    updateBadgeText(newData.length);
+    updateBadgeText(newData.length || "");
     
     let settings = await loadSettings();
     if (settings.notifications == false) { return }
@@ -63,22 +63,31 @@ chrome.alarms.onAlarm.addListener(async alarm => {
     let cache = await new Promise(resolve => chrome.storage.local.get(["notification_cache"], res => {
         resolve(res.notification_cache || []);
     }));
-    
+
+    // Filter all the streams that ended, but dont add new streams
     cache = cache.filter(e1 => {
         return newData.some(e2 => e1 === e2.id);
     });
 
-
+    // Filter all new streams and put in result
     let result = newData.filter(e1 => {
         return !cache.includes(e1.id);
     });
 
-
+    let notification_string = "";
     for (let stream of result) {
         if (stream.user_name != "") {
             cache.push(stream.id);
-            sendNotification(stream.user_name);
+            notification_string += stream.user_name + ", "
         }
+    }
+
+    if (result.length > 0) {
+        notification_string = notification_string.substring(0, notification_string.lastIndexOf(","));
+
+        notification_string = notification_string.replace(/,(?!.*,)/, " and")
+
+        sendNotification(notification_string + " " + (result.length > 1 ? "are" : "is") + " now live!");
     }
 
     chrome.storage.local.set({notification_cache: cache});

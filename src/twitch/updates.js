@@ -9,11 +9,11 @@ export const updateBadgeText = (number) => {
     }
 }
 
-export const sendNotification = (user_name) => {
+export const sendNotification = (text) => {
     chrome.notifications.create(undefined, {
         iconUrl: "../icons/icon128.png",
         title: "InstantTwitch",
         type: "basic",
-        message: user_name + " is now live"
+        message: text
     })
 }
