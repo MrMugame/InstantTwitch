@@ -31,13 +31,13 @@ const isValid = async (data) => {
 }
 
 const loadData = async (store) => {
-    let data = get({subscribe: store.subscribe});
-
+    
     let response = await loadCache();
     store.set(response);
     
+    let data = get({subscribe: store.subscribe});
+
     if (!(await isValid(data))) {
-        
         let validToken = await checkAccessToken();
         
         if (validToken?.expires_in > 0) {
