@@ -6,6 +6,7 @@
     import { loadSettings, saveSettings, SORTING } from "../twitch/settings";
     import Selectsetting from "../lib/selectsetting.svelte";
     import Checkboxsetting from "../lib/checkboxsetting.svelte";
+    import Loading from "../lib/loading.svelte"
     
     let dispatch = createEventDispatcher();
 
@@ -52,7 +53,7 @@
 
 
     {#await settingsPromise}
-        <h1>Loading</h1>
+        <Loading/>
     {:then}
         <Selectsetting name="Update interval" options={intervalOptions} bind:selected={settings.fetchCycle}/>
 

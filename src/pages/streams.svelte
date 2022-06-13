@@ -1,5 +1,6 @@
 <script>
     import Stream from "../lib/stream.svelte"
+    import Loading from "../lib/loading.svelte"
     import { data } from "../stores/cache";
     import { loadSettings, SORTING } from "../twitch/settings";
     import { promise } from "../stores/promise"
@@ -40,7 +41,7 @@
 
 <div class="overflow-y-scroll flex-1 dark:bg-background">
     {#await $promise}
-        <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">Loading...</h1>
+        <Loading/>
     {:then}
         {#each filteredStreams as stream}
             <Stream stream={stream}/>
