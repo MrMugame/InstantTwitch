@@ -7,8 +7,6 @@
 
     let filteredStreams = $data.streams || [];
 
-    $promise = data.loadData();
-
     let settings = {};
     const reloadSettings = async () => settings = await loadSettings()
     reloadSettings();

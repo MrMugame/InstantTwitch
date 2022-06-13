@@ -2,9 +2,14 @@
     import Router from 'svelte-spa-router'
     import routes from "./routes"
     import Navbar from "./lib/navbar.svelte";
+    import Bottombar from "./lib/bottombar.svelte"
     import { loadSettings } from "./twitch/settings";
+    import { promise } from "./stores/promise"
+    import { data } from "./stores/cache";
     
     let settings;
+
+    $promise = data.loadData();
 
     const load = async () => settings = await loadSettings();
 
@@ -17,5 +22,13 @@
         <Navbar/>
     
         <Router {routes}/>
+
+        <Bottombar/>
     </div>
 </main>
+
+<style>
+    :root {
+        color-scheme: dark;
+    }
+</style>

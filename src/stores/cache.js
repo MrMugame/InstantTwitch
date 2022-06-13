@@ -80,6 +80,7 @@ const logout = async (store) => {
     clearCache();
     store.set({})
     loadData(store);
+    window.close();
 }
 
 function createDatastore() {
