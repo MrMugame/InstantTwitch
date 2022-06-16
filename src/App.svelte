@@ -4,21 +4,20 @@
     import Navbar from "./lib/navbar.svelte";
     import Loading from './lib/loading.svelte';
     import Bottombar from "./lib/bottombar.svelte"
-    import { loadSettings } from "./twitch/settings";
+    import { settings } from "./twitch/settings";
     import { onMount } from 'svelte/internal';
     import { loadUser } from './stores/data';
 
-    let settings;
     let userPromise = loadUser();
 
     onMount(async () => {
-        settings = await loadSettings();
+        await settings.load();
     })
 
 </script>
 
 
-<main class={settings?.darkmode ? 'dark' : ''}>
+<main class={$settings?.darkmode ? 'dark' : ''}>
     <div class="w-[450px] h-[600px] dark:bg-background bg-lightbackground overflow-hidden flex flex-col border-none">
         <Navbar userPromise={userPromise}/>
         

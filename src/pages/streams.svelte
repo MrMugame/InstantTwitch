@@ -1,7 +1,7 @@
 <script>
     import Stream from "../lib/stream.svelte"
     import Loading from "../lib/loading.svelte"
-    import { loadSettings, SORTING } from "../twitch/settings";
+    import { settings, SORTING } from "../twitch/settings";
     import { filter } from "../stores/filter"
     import { loadStreams, refreshStreams } from "../stores/data";
     import { onMount, subscribe } from "svelte/internal";
@@ -9,7 +9,6 @@
 
     let loading = true;
     let filteredStreams = [];
-    let settings = {};
 
     subscribe(reload, async (bool) => {
         if (bool) {
@@ -22,7 +21,6 @@
 
     onMount(async () => {
         filteredStreams = await loadStreams(); 
-        settings = await loadSettings();
         loading = false;
     })
 
@@ -37,13 +35,13 @@
     }
 
     $: {
-        if (settings.sortingOption === SORTING.LARGETOSMALL) {
+        if ($settings.sortingOption === SORTING.LARGETOSMALL) {
             filteredStreams.sort((a, b) => a.viewer_count < b.viewer_count ? 1 : -1);
-        } else if (settings.sortingOption === SORTING.SMALLTOLARGE) {
+        } else if ($settings.sortingOption === SORTING.SMALLTOLARGE) {
             filteredStreams.sort((a, b) => a.viewer_count > b.viewer_count ? 1 : -1);
-        } else if (settings.sortingOption === SORTING.ALPHABETICALLY) {
+        } else if ($settings.sortingOption === SORTING.ALPHABETICALLY) {
             filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
-        } else if (settings.sortingOption === SORTING.REVERSEALPHABETICALLY) {
+        } else if ($settings.sortingOption === SORTING.REVERSEALPHABETICALLY) {
             filteredStreams.sort((a, b) => b.user_name.localeCompare(a.user_name));
         }
     }

@@ -1,3 +1,5 @@
+import { get, writable } from "svelte/store";
+
 export const SORTING = {
     SMALLTOLARGE: "SMALLTOLARGE",
     LARGETOSMALL: "LARGETOSMALL",
@@ -14,7 +16,7 @@ const defaultSettings = {
     valid: false
 }
 
-export const loadSettings = async () => {
+const loadSettings = async () => {
     return new Promise((resolve) => chrome.storage.local.get(["settings"], res => {
         if (res.settings?.valid == true) {
             resolve({...defaultSettings, ...res.settings});
@@ -24,7 +26,7 @@ export const loadSettings = async () => {
     }))
 }
 
-export const saveSettings = (data) => {
+const saveSettings = (data) => {
     let result = {
         ...data,
         valid: true
@@ -36,3 +38,17 @@ export const saveSettings = (data) => {
         chrome.alarms.create("update", { periodInMinutes: result.fetchCycle});
     });
 }
+
+const createSettingsStore = () => {
+    const { subscribe, set, update } = writable(defaultSettings);
+
+    return {
+        subscribe,
+        set,
+        update,
+        load: async () => set(await loadSettings()),
+        save: () => saveSettings(get({subscribe}))
+    }
+}
+
+export const settings = createSettingsStore();

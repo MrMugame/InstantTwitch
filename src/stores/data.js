@@ -1,6 +1,7 @@
+import { get } from "svelte/store";
 import { checkAccessToken, getFollows, getUser } from "../twitch/api";
 import { loadCache, saveCache, clearCache } from "../twitch/cache";
-import { loadSettings } from "../twitch/settings";
+import { settings as settingsStore } from "../twitch/settings";
 import { updateBadgeText } from "../twitch/updates";
 
 export const loadUser = async () => {
@@ -27,7 +28,7 @@ const isValid = async (data) => {
     if (data?.age == undefined || data?.streams == undefined) {
         return false
     }
-    const settings = await loadSettings();
+    const settings = get(settingsStore);
 
     const time_diff = new Date().getTime() - data.age;
     return time_diff < (settings.dataLifeTime * 60 * 1000)
@@ -60,7 +61,7 @@ export const loadStreams = async () => {
 
 export const refreshStreams = async () => {
     let user = await loadUser();
-        
+
     if (user != undefined) {
         let streams = await getFollows(user.id);
         

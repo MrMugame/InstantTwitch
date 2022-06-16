@@ -1,7 +1,8 @@
 import { getFollows } from "./twitch/api.js";
-import { loadSettings } from "/twitch/settings.js";
+import { settings as settingsStore } from "./twitch/settings.js";
 import { sendNotification, updateBadgeText } from "./twitch/updates.js";
 import { loadUser } from "./stores/data.js";
+import { get } from "svelte/store";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
@@ -40,11 +41,10 @@ const makeURL = () => {
     return url.href
 }
 
-loadSettings().then(res => {
-    //console.log(res.fetchCycle)
-    //chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
-    chrome.alarms.create("update", { periodInMinutes: 0.2 });
-})
+(() => {
+    let res = get(settingsStore);
+    chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
+})();
 
 
 chrome.alarms.onAlarm.addListener(async alarm => {
@@ -58,7 +58,7 @@ chrome.alarms.onAlarm.addListener(async alarm => {
 
     updateBadgeText(newData.length || "");
     
-    let settings = await loadSettings();
+    let settings = get(settingsStore);
     if (settings.notifications == false) { return }
     
     let cache = await new Promise(resolve => chrome.storage.local.get(["notification_cache"], res => {

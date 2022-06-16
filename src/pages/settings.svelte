@@ -1,17 +1,10 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    import { loadSettings, saveSettings, SORTING } from "../twitch/settings";
+    import { settings, SORTING } from "../twitch/settings";
     import Selectsetting from "../lib/selectsetting.svelte";
     import Checkboxsetting from "../lib/checkboxsetting.svelte";
-    import Loading from "../lib/loading.svelte"
-    
-    let dispatch = createEventDispatcher();
 
-    let settings;
-
-    let settingsPromise = loadSettings();
-        settingsPromise.then(res => {
-        settings = res;
+    settings.subscribe(() => {
+        settings.save();
     });
 
     let intervalOptions = {
@@ -29,31 +22,22 @@
         "alphabetically": SORTING.ALPHABETICALLY,
         "reverse alphabetically": SORTING.REVERSEALPHABETICALLY
     }
-
-    $: {
-        if (settings != undefined) {
-            saveSettings(settings);
-            dispatch("reload", {});
-        }
-    }
-
 </script>
 
 
 <div class="flex flex-col p-2 px-5">
-    {#await settingsPromise}
-        <Loading/>
-    {:then}
-        <Selectsetting name="Update interval" options={intervalOptions} bind:selected={settings.fetchCycle}/>
 
-        <Selectsetting name="Data lifetime" options={intervalOptions} bind:selected={settings.dataLifeTime}/>
+    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-10 after:h-10 after:bg-green-500 after:-top-2 after:-left-10 after:relative">Account</h1>
+    
+    <Selectsetting name="Update interval" options={intervalOptions} bind:selected={$settings.fetchCycle}/>
 
-        <Checkboxsetting name="Notifications" bind:checked={settings.notifications}/>
+    <Selectsetting name="Data lifetime" options={intervalOptions} bind:selected={$settings.dataLifeTime}/>
 
-        <Checkboxsetting name="Darkmode" bind:checked={settings.darkmode}/>
+    <Checkboxsetting name="Notifications" bind:checked={$settings.notifications}/>
 
-        <Selectsetting name="Sorting" options={sortingOptions} bind:selected={settings.sortingOption}/>
+    <Checkboxsetting name="Darkmode" bind:checked={$settings.darkmode}/>
 
-        <h2 class="p-1 hover:bg-twitch select-none" on:click={() => console.log("logout")}>Logout</h2>
-    {/await}
+    <Selectsetting name="Sorting" options={sortingOptions} bind:selected={$settings.sortingOption}/>
+
+    <h2 class="p-1 hover:bg-twitch select-none" on:click={() => console.log("logout")}>Logout</h2>
 </div>
