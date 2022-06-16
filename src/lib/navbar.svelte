@@ -1,22 +1,25 @@
 <script>
     import User from './user.svelte';
-    import { data } from "../stores/OLD_cache";
-    import { promise } from "../stores/promise"
     import { filter } from "../stores/filter"
+    import { reload } from "../stores/reload"
+ 
+    export let userPromise;
 </script>
 
 
 <div class="flex justify-between w-full border-b-[1px] border-lightborder dark:bg-foreground bg-lightforeground relative">
     <div class="flex flex-row p-1">
         <input bind:value={$filter} type="text" placeholder="Search" class="dark:bg-background bg-lightbackground h-6 w-48 rounded-md pl-2 dark:text-strongtext text-lightstrongtext mr-2 text-xs">
-        <svg on:click={_ => $promise = data.refreshStreams()} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 dark:fill-lighttext dark:hover:fill-strongtext fill-lightstrongtext hover:fill-lightlighttext transition-colors" viewBox="0 0 20 20" fill="currentColor">
+        <svg on:click={() => $reload = true} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 dark:fill-lighttext dark:hover:fill-strongtext fill-lightstrongtext hover:fill-lightlighttext transition-colors" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
         </svg>
     </div>
-    {#await $promise then}
-        <User/>
+    {#await userPromise}
+        <h1>loading</h1>
+    {:then user}
+        <User user={user}/>
     {:catch}
-        <button class="bg-twitch rounded-md px-3 border-[1px] border-lightborder dark:text-strongtext text-lightstrongtext font-semibold m-1" on:click={_ => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
+        <button class="bg-twitch rounded-md px-3 border-[1px] border-lightborder dark:text-strongtext text-lightstrongtext font-semibold m-1" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
             Login
         </button>
     {/await}

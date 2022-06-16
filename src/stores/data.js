@@ -1,7 +1,7 @@
-import { checkAccessToken, getFollows, getUser } from "src/twitch/api";
-import { loadCache, saveCache, clearCache } from "src/twitch/cache";
-import { loadSettings } from "src/twitch/settings";
-import { updateBadgeText } from "src/twitch/updates";
+import { checkAccessToken, getFollows, getUser } from "../twitch/api";
+import { loadCache, saveCache, clearCache } from "../twitch/cache";
+import { loadSettings } from "../twitch/settings";
+import { updateBadgeText } from "../twitch/updates";
 
 export const loadUser = async () => {
     const response = await loadCache("user");
@@ -24,7 +24,7 @@ export const loadUser = async () => {
 }
 
 const isValid = async (data) => {
-    if (data.age == undefined || data.streams == undefined) {
+    if (data?.age == undefined || data?.streams == undefined) {
         return false
     }
     const settings = await loadSettings();
@@ -36,7 +36,7 @@ const isValid = async (data) => {
 export const loadStreams = async () => {
     const response = await loadCache("streams");
 
-    if (!isValid(response)) {
+    if (!await isValid(response)) {
         let user = await loadUser();
         
         if (user != undefined) {
@@ -44,14 +44,12 @@ export const loadStreams = async () => {
             
             updateBadgeText(streams.length);
 
-            let data = {
+            saveCache("streams", {
                 age: new Date().getTime(),
                 streams: streams
-            }
+            });
 
-            saveCache(data);
-
-            return data
+            return streams
         } else {
             throw new Error();
         }
@@ -60,7 +58,7 @@ export const loadStreams = async () => {
     }
 }
 
-export const refreshStreams = async (store) => {
+export const refreshStreams = async () => {
     let user = await loadUser();
         
     if (user != undefined) {

@@ -1,6 +1,4 @@
 <script>
-    import { promise } from "../stores/promise"
-    import { data } from "../stores/OLD_cache"
     import { createEventDispatcher } from "svelte";
     import { loadSettings, saveSettings, SORTING } from "../twitch/settings";
     import Selectsetting from "../lib/selectsetting.svelte";
@@ -56,6 +54,6 @@
 
         <Selectsetting name="Sorting" options={sortingOptions} bind:selected={settings.sortingOption}/>
 
-        <h2 class="p-1 hover:bg-twitch select-none" on:click={_ => $promise = data.logout()}>Logout</h2>
+        <h2 class="p-1 hover:bg-twitch select-none" on:click={() => console.log("logout")}>Logout</h2>
     {/await}
 </div>

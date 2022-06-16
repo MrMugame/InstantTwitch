@@ -1,27 +1,39 @@
 <script>
     import Stream from "../lib/stream.svelte"
     import Loading from "../lib/loading.svelte"
-    import { data } from "../stores/OLD_cache";
     import { loadSettings, SORTING } from "../twitch/settings";
-    import { promise } from "../stores/promise"
     import { filter } from "../stores/filter"
+    import { loadStreams, refreshStreams } from "../stores/data";
+    import { onMount, subscribe } from "svelte/internal";
+    import { reload } from "../stores/reload";
 
-    let filteredStreams = $data.streams || [];
-
+    let loading = true;
+    let filteredStreams = [];
     let settings = {};
-    const reloadSettings = async () => settings = await loadSettings()
-    reloadSettings();
 
+    subscribe(reload, async (bool) => {
+        if (bool) {
+            loading = true;
+            filteredStreams = (await refreshStreams()).streams;
+            $reload = false;
+            loading = false;
+        }
+    })
+
+    onMount(async () => {
+        filteredStreams = await loadStreams(); 
+        settings = await loadSettings();
+        loading = false;
+    })
 
     $: {
         const searchTerm = $filter.toLowerCase();
-        data.isValid().then(valid => {
-            if (valid) {
-                filteredStreams = $data.streams.filter(stream => {
-                    return stream.user_name.toLowerCase().includes(searchTerm)
-                });
-            }
-        })
+        (async () => {
+            const streams = await loadStreams();
+            filteredStreams = streams.filter(stream => {
+                return stream.user_name.toLowerCase().includes(searchTerm)
+            });
+        })();
     }
 
     $: {
@@ -40,13 +52,13 @@
 
 
 <div class="overflow-y-scroll flex-1 dark:bg-background">
-    {#await $promise}
-        <Loading/>
-    {:then}
+    {#if !loading}
         {#each filteredStreams as stream}
             <Stream stream={stream}/>
+        {:else}
+            <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">No results</h1>
         {/each}
-    {:catch}
-        <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">Login first</h1>
-    {/await}
+    {:else}
+        <Loading/>
+    {/if}
 </div>
