@@ -24,7 +24,7 @@
         
         {#await userPromise}
             <Loading/>
-        {:then} 
+        {:then}
             <Router {routes}/>
         {:catch}
             <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">Login first</h1>

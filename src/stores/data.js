@@ -66,14 +66,12 @@ export const refreshStreams = async () => {
         
         updateBadgeText(streams.length);
 
-        let data = {
+        saveCache("streams", {
             age: new Date().getTime(),
             streams: streams
-        }
+        });
 
-        saveCache(data);
-
-        return data
+        return streams
     } else {
         throw new Error();
     }

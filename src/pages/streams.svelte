@@ -14,7 +14,7 @@
     subscribe(reload, async (bool) => {
         if (bool) {
             loading = true;
-            filteredStreams = (await refreshStreams()).streams;
+            filteredStreams = await refreshStreams();
             $reload = false;
             loading = false;
         }

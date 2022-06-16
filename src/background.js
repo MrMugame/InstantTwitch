@@ -1,7 +1,7 @@
-import { loadSettings } from "./twitch/settings.js";
+import { getFollows } from "./twitch/api.js";
+import { loadSettings } from "/twitch/settings.js";
 import { sendNotification, updateBadgeText } from "./twitch/updates.js";
-import { refreshStreams } from "./stores/data.js";
-import { loadCache, saveCache } from "./twitch/cache.js";
+import { loadUser } from "./stores/data.js";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
@@ -41,31 +41,37 @@ const makeURL = () => {
 }
 
 loadSettings().then(res => {
-    // console.log(res.fetchCycle)
+    //console.log(res.fetchCycle)
     //chrome.alarms.create("update", { periodInMinutes: res.fetchCycle });
-    // chrome.alarms.create("update", { periodInMinutes: 0.2 });
+    chrome.alarms.create("update", { periodInMinutes: 0.2 });
 })
 
 
 chrome.alarms.onAlarm.addListener(async alarm => {
     if (alarm.name !== "update") { return }
 
-    let streams = await refreshStreams();
+    const oldData = await loadUser();
 
-    updateBadgeText(streams.length || "");
+    if (oldData == undefined) { return }
+    
+    const newData = await getFollows(oldData.id);
+
+    updateBadgeText(newData.length || "");
     
     let settings = await loadSettings();
     if (settings.notifications == false) { return }
     
-    let cache = await loadCache("streams") || { streams: []};
+    let cache = await new Promise(resolve => chrome.storage.local.get(["notification_cache"], res => {
+        resolve(res.notification_cache || []);
+    }));
 
     // Filter all the streams that ended, but dont add new streams
-    cache = cache.streams.filter(e1 => {
-        return streams.some(e2 => e1 === e2.id);
+    cache = cache.filter(e1 => {
+        return newData.some(e2 => e1 === e2.id);
     });
 
     // Filter all new streams and put in result
-    let result = streams.filter(e1 => {
+    let result = newData.filter(e1 => {
         return !cache.includes(e1.id);
     });
 
@@ -85,8 +91,5 @@ chrome.alarms.onAlarm.addListener(async alarm => {
         sendNotification(notification_string + " " + (result.length > 1 ? "are" : "is") + " now live!");
     }
 
-    saveCache("streams", {
-        streams: cache,
-        age: new Date().getTime()
-    });
+    chrome.storage.local.set({notification_cache: cache});
 })
