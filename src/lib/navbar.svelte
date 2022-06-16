@@ -1,6 +1,6 @@
 <script>
     import User from './user.svelte';
-    import { data } from "../stores/cache";
+    import { data } from "../stores/OLD_cache";
     import { promise } from "../stores/promise"
     import { filter } from "../stores/filter"
 </script>

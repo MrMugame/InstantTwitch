@@ -1,7 +1,6 @@
 <script>
-    import { push } from 'svelte-spa-router'
     import { promise } from "../stores/promise"
-    import { data } from "../stores/cache"
+    import { data } from "../stores/OLD_cache"
     import { createEventDispatcher } from "svelte";
     import { loadSettings, saveSettings, SORTING } from "../twitch/settings";
     import Selectsetting from "../lib/selectsetting.svelte";
@@ -13,7 +12,7 @@
     let settings;
 
     let settingsPromise = loadSettings();
-    settingsPromise.then(res => {
+        settingsPromise.then(res => {
         settings = res;
     });
 
@@ -21,7 +20,7 @@
         "1min": 1, 
         "2.5min": 2.5, 
         "5min": 5, 
-        "10min": 10, 
+        "10min": 10,
         "15min": 15, 
         "30min": 30
     }
@@ -44,14 +43,6 @@
 
 
 <div class="flex flex-col p-2 px-5">
-    <!-- <div class="flex justify-between mb-5">
-        <svg on:click={_ => push('/')} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover: dark:stroke-lighttext stroke-lightstrongtext dark:hover:stroke-strongtext hover:stroke-lightlighttext" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        <h2 class="font-roboto dark:text-lighttext text-lightlighttext font-semibold text-base mx-6">Settings</h2>
-    </div> -->
-
-
     {#await settingsPromise}
         <Loading/>
     {:then}

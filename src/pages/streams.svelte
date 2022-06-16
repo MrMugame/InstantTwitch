@@ -1,7 +1,7 @@
 <script>
     import Stream from "../lib/stream.svelte"
     import Loading from "../lib/loading.svelte"
-    import { data } from "../stores/cache";
+    import { data } from "../stores/OLD_cache";
     import { loadSettings, SORTING } from "../twitch/settings";
     import { promise } from "../stores/promise"
     import { filter } from "../stores/filter"

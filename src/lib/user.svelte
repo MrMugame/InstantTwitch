@@ -1,7 +1,6 @@
 <script>
-    import { push } from 'svelte-spa-router'
     import { promise } from "../stores/promise"
-    import { data } from "../stores/cache";
+    import { data } from "../stores/OLD_cache";
 </script>
 
 <div class="outside py-1 mr-2">

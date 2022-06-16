@@ -5,7 +5,7 @@
     import Bottombar from "./lib/bottombar.svelte"
     import { loadSettings } from "./twitch/settings";
     import { promise } from "./stores/promise"
-    import { data } from "./stores/cache";
+    import { data } from "./stores/OLD_cache";
     
     let settings;
 

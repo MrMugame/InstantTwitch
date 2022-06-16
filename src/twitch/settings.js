@@ -1,11 +1,9 @@
-const SORTING = {
+export const SORTING = {
     SMALLTOLARGE: "SMALLTOLARGE",
     LARGETOSMALL: "LARGETOSMALL",
     ALPHABETICALLY: "ALPHABETICALLY",
     REVERSEALPHABETICALLY: "REVERSEALPHABETICALLY",
 }
-export { SORTING };
-
 
 const defaultSettings = {
     dataLifeTime: 10,
@@ -16,9 +14,8 @@ const defaultSettings = {
     valid: false
 }
 
-
 export const loadSettings = async () => {
-    return new Promise((resolve, reject) => chrome.storage.local.get(["settings"], res => {
+    return new Promise((resolve) => chrome.storage.local.get(["settings"], res => {
         if (res.settings?.valid == true) {
             resolve({...defaultSettings, ...res.settings});
         } else {
@@ -37,5 +34,5 @@ export const saveSettings = (data) => {
  
     chrome.alarms.clear("update", () => {
         chrome.alarms.create("update", { periodInMinutes: result.fetchCycle});
-    })
+    });
 }
