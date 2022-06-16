@@ -19,7 +19,7 @@
     {:then user}
         <User user={user}/>
     {:catch}
-        <button class="bg-twitch rounded-md px-3 border-[1px] border-lightborder dark:text-strongtext text-lightstrongtext font-semibold m-1" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
+        <button class="bg-twitch rounded-md px-3 border-[1px] border-lightborder dark:text-strongtext text-lightstrongtext font-semibold m-1 hover:opacity-80" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
             Login
         </button>
     {/await}

@@ -2,6 +2,8 @@
     import { settings, SORTING } from "../twitch/settings";
     import Selectsetting from "../lib/selectsetting.svelte";
     import Checkboxsetting from "../lib/checkboxsetting.svelte";
+    import Buttonsetting from "../lib/buttonsetting.svelte";
+    import { logout } from "../stores/data";
 
     settings.subscribe(() => {
         settings.save();
@@ -27,17 +29,22 @@
 
 <div class="flex flex-col p-2 px-5">
 
-    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-10 after:h-10 after:bg-green-500 after:-top-2 after:-left-10 after:relative">Account</h1>
-    
+    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] after:bg-strongborder after:top-0 after:left-0 after:relative after:block">Notifications</h1>
+    <Checkboxsetting name="Notifications" bind:checked={$settings.notifications}/>
     <Selectsetting name="Update interval" options={intervalOptions} bind:selected={$settings.fetchCycle}/>
+
+    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] after:bg-strongborder after:top-0 after:left-0 after:relative after:block mt-5">Appearance</h1>
+    <Checkboxsetting name="Darkmode" bind:checked={$settings.darkmode}/>
+    <Selectsetting name="Sorting" options={sortingOptions} bind:selected={$settings.sortingOption}/>
+    
+    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] after:bg-strongborder after:top-0 after:left-0 after:relative after:block mt-5">Account</h1>
+    
+    <Buttonsetting name="Logout" on:click={() => logout()}></Buttonsetting>
+    
 
     <Selectsetting name="Data lifetime" options={intervalOptions} bind:selected={$settings.dataLifeTime}/>
 
-    <Checkboxsetting name="Notifications" bind:checked={$settings.notifications}/>
 
-    <Checkboxsetting name="Darkmode" bind:checked={$settings.darkmode}/>
 
-    <Selectsetting name="Sorting" options={sortingOptions} bind:selected={$settings.sortingOption}/>
 
-    <h2 class="p-1 hover:bg-twitch select-none" on:click={() => console.log("logout")}>Logout</h2>
 </div>
