@@ -37,6 +37,16 @@ export const getFollows = async (userID) => {
     });
 }
 
+export const getTopGames = async (amount = 20) => {
+    return new Promise(async (resolve, reject) => {
+        fetch("https://api.twitch.tv/helix/games/top?first=" + amount, {
+            headers: await getHeaders()
+        })
+        .then(response => response.json())
+        .then(res => resolve(res.data));
+    });
+}
+
 export const checkAccessToken = async () => {
     return new Promise(async (resolve, reject) => {
         fetch("https://id.twitch.tv/oauth2/validate", {
@@ -48,3 +58,4 @@ export const checkAccessToken = async () => {
         .catch(err => reject(err))
     })
 }
+

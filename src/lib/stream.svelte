@@ -28,7 +28,7 @@
         <p class="absolute bottom-0 right-0 px-[1px] bg-black bg-opacity-60 text-strongtext text-xs">{getTime()}</p>
     </div>
     <div class="ml-3">
-        <h1 class="text-xl dark:text-strongtext text-lightstrongtext bg-opacity-5 leading-5 font-roboto font-bold mb-1">{stream.user_name}</h1>
+        <h1 class="text-xl dark:text-strongtext text-lightstrongtext leading-5 font-roboto font-bold mb-1">{stream.user_name}</h1>
         <h2 class="font-roboto text-xs">{stream.game_name} - {stream.viewer_count} Viewer</h2>
         <h2 class="font-roboto w-[300px] overflow-ellipsis whitespace-nowrap overflow-hidden inline-block text-xs">{stream.title}</h2>
     </div>
