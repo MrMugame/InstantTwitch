@@ -7,7 +7,6 @@ import { get } from "svelte/store";
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("messa")
     if (request.data != "OAUTH") { return }
 
     return new Promise(resolve => {

@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { checkAccessToken, getFollows, getUser } from "../twitch/api";
+import { checkAccessToken, getAllFollows, getFollows, getUser } from "../twitch/api";
 import { loadCache, saveCache, clearCache } from "../twitch/cache";
 import { settings as settingsStore } from "../twitch/settings";
 import { updateBadgeText } from "../twitch/updates";
@@ -25,7 +25,7 @@ export const loadUser = async () => {
 }
 
 const isValid = async (data) => {
-    if (data?.age == undefined || data?.streams == undefined) {
+    if (data?.age == undefined || !(data?.streams == undefined || data?.follows == undefined)) {
         return false
     }
     const settings = get(settingsStore);
@@ -56,6 +56,38 @@ export const loadStreams = async () => {
         }
     } else {
         return response.streams
+    }
+}
+
+export const loadFollows = async () => {
+    const response = await loadCache("follows");
+
+    if (!await isValid(response)) {
+        let user = await loadUser();
+        
+        if (user != undefined) {
+            let total = 100;
+            let cursor = "";
+            let follows = [];
+
+            for (let i = 0; i < total; i += 100) {
+                let res = await getAllFollows(user.id, 100, cursor);
+                follows = [...follows, ...res.data];
+                cursor = res.pagination.cursor;
+                total = res.total;
+            }
+
+            saveCache("follows", {
+                age: new Date().getTime(),
+                follows: follows
+            });
+
+            return follows
+        } else {
+            throw new Error();
+        }
+    } else {
+        return response.follows
     }
 }
 

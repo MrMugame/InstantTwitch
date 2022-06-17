@@ -3,10 +3,9 @@
     import Loading from "../lib/loading.svelte"
     import { settings, SORTING } from "../twitch/settings";
     import { filter } from "../stores/filter"
-    import { loadStreams, refreshStreams } from "../stores/data";
+    import { loadFollows, loadStreams, refreshStreams } from "../stores/data";
     import { onMount } from "svelte/internal";
     import { reload } from "../stores/reload";
-
     let loading = true;
     let filteredStreams = [];
 
@@ -22,6 +21,7 @@
     onMount(async () => {
         filteredStreams = await loadStreams(); 
         loading = false;
+        //console.log(await loadFollows());
     })
 
     $: {
