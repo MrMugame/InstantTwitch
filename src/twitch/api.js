@@ -47,6 +47,18 @@ export const getTopGames = async (amount = 20) => {
     });
 }
 
+export const getQueryGames = async (query = "") => {
+    return new Promise(async (resolve, reject) => {
+        fetch("https://api.twitch.tv/helix/search/categories?query=" + query, {
+            headers: await getHeaders()
+        })
+        .then(response => response.json())
+        .then(res => resolve(res.data));
+    });
+}
+
+
+
 export const checkAccessToken = async () => {
     return new Promise(async (resolve, reject) => {
         fetch("https://id.twitch.tv/oauth2/validate", {

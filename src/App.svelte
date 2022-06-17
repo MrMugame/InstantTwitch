@@ -7,11 +7,17 @@
     import { settings } from "./twitch/settings";
     import { onMount } from 'svelte/internal';
     import { loadUser } from './stores/data';
+    import { location } from "svelte-spa-router"
+    import { filter } from './stores/filter';
 
     let userPromise = loadUser();
 
     onMount(async () => {
         await settings.load();
+    });
+
+    location.subscribe(() => {
+        $filter = "";
     })
 
 
@@ -27,7 +33,7 @@
         {:then}
             <Router {routes}/>
         {:catch}
-            <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">Login first</h1>
+            <h1 class="text-center font-sans text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">Login first</h1>
         {/await}
 
         <Bottombar/>

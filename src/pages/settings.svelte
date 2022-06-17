@@ -19,10 +19,10 @@
     }
 
     let sortingOptions = {
-        "small to large": SORTING.SMALLTOLARGE, 
-        "large to small": SORTING.LARGETOSMALL, 
-        "alphabetically": SORTING.ALPHABETICALLY,
-        "reverse alphabetically": SORTING.REVERSEALPHABETICALLY
+        "Viewercount ascending": SORTING.SMALLTOLARGE, 
+        "Viewercount descending": SORTING.LARGETOSMALL, 
+        "Alphabetically": SORTING.ALPHABETICALLY,
+        "Reverse alphabetically": SORTING.REVERSEALPHABETICALLY
     }
 </script>
 

@@ -4,13 +4,13 @@
     import { settings, SORTING } from "../twitch/settings";
     import { filter } from "../stores/filter"
     import { loadStreams, refreshStreams } from "../stores/data";
-    import { onMount, subscribe } from "svelte/internal";
+    import { onMount } from "svelte/internal";
     import { reload } from "../stores/reload";
 
     let loading = true;
     let filteredStreams = [];
 
-    subscribe(reload, async (bool) => {
+    reload.subscribe(async (bool) => {
         if (bool) {
             loading = true;
             filteredStreams = await refreshStreams();
