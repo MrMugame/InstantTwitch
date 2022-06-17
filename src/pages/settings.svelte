@@ -29,22 +29,19 @@
 
 <div class="flex flex-col p-2 px-5">
 
-    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] after:bg-strongborder after:top-0 after:left-0 after:relative after:block">Notifications</h1>
+    <h1 class="font-sans text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] dark:after:bg-strongborder after:bg-lightborder after:top-0 after:left-0 after:relative after:block">Notifications</h1>
     <Checkboxsetting name="Notifications" bind:checked={$settings.notifications}/>
     <Selectsetting name="Update interval" options={intervalOptions} bind:selected={$settings.fetchCycle}/>
 
-    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] after:bg-strongborder after:top-0 after:left-0 after:relative after:block mt-5">Appearance</h1>
+    <h1 class="font-sans text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] dark:after:bg-strongborder after:bg-lightborder after:top-0 after:left-0 after:relative after:block mt-5">Appearance</h1>
     <Checkboxsetting name="Darkmode" bind:checked={$settings.darkmode}/>
     <Selectsetting name="Sorting" options={sortingOptions} bind:selected={$settings.sortingOption}/>
     
-    <h1 class="font-roboto text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] after:bg-strongborder after:top-0 after:left-0 after:relative after:block mt-5">Account</h1>
+    <h1 class="font-sans text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] dark:after:bg-strongborder after:bg-lightborder after:top-0 after:left-0 after:relative after:block mt-5">Account</h1>
     
     <Buttonsetting name="Logout" on:click={() => logout()}></Buttonsetting>
     
 
     <Selectsetting name="Data lifetime" options={intervalOptions} bind:selected={$settings.dataLifeTime}/>
-
-
-
 
 </div>
