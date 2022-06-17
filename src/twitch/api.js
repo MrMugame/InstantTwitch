@@ -18,54 +18,52 @@ const getHeaders = async () => {
 }
 
 export const getUser = async () => {
-    return new Promise(async (resolve, reject) => {
-        fetch("https://api.twitch.tv/helix/users", {
+    let response = await fetch("https://api.twitch.tv/helix/users", {
             headers: await getHeaders()
-        })
-        .then(response => response.json())
-        .then(res => resolve(res.data[0]));
-    })
+    });
+    let data = await response.json();
+    return data.data[0]
 }
 
 export const getFollows = async (userID) => {
-    return new Promise(async (resolve, reject) => {
-        fetch("https://api.twitch.tv/helix/streams/followed?user_id=" + userID, {
+    let response = await fetch("https://api.twitch.tv/helix/streams/followed?user_id=" + userID, {
             headers: await getHeaders()
-        })
-        .then(response => response.json())
-        .then(res => resolve(res.data));
     });
+    let data = await response.json();
+    return data.data
 }
 
 export const getTopGames = async (amount = 20, cursor = "") => {
-    return new Promise(async (resolve) => {
-        fetch("https://api.twitch.tv/helix/games/top?first=" + amount + "&after=" + cursor, {
+    let response = await fetch("https://api.twitch.tv/helix/games/top?first=" + amount + "&after=" + cursor, {
             headers: await getHeaders()
-        })
-        .then(response => response.json())
-        .then(res => resolve(res));
     });
+    let data = await response.json();
+    return data
+}
+
+export const getTopStreams = async (amount = 20, cursor = "") => {
+    let response = await fetch("https://api.twitch.tv/helix/streams?first=" + amount + "&after=" + cursor, {
+        headers: await getHeaders()
+    });
+    let data = await response.json();
+    return data
 }
 
 export const getQueryGames = async (query = "", cursor = "") => {
-    return new Promise(async (resolve, reject) => {
-        fetch("https://api.twitch.tv/helix/search/categories?query=" + query + "&after=" + cursor, {
-            headers: await getHeaders()
-        })
-        .then(response => response.json())
-        .then(res => resolve(res));
+    let response = await fetch("https://api.twitch.tv/helix/search/categories?query=" + query + "&after=" + cursor, {
+        headers: await getHeaders()
     });
+    let data = await response.json();
+    return data
 }
 
 
 export const getAllFollows = async (userID, amount = 20, cursor = "") => {
-    return new Promise(async (resolve, reject) => {
-        fetch(`https://api.twitch.tv/helix/users/follows?from_id=${userID}&first=${amount}&after=${cursor}`, {
-            headers: await getHeaders()
-        })
-        .then(response => response.json())
-        .then(res => resolve(res));
+    let response = await fetch(`https://api.twitch.tv/helix/users/follows?from_id=${userID}&first=${amount}&after=${cursor}`, {
+        headers: await getHeaders()
     });
+    let data = await response.json();
+    return data
 }
 
 export const checkAccessToken = async () => {

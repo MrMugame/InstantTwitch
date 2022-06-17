@@ -25,7 +25,7 @@
 
 
 <main class={$settings?.darkmode ? 'dark' : ''}>
-    <div class="w-[450px] h-[600px] dark:bg-background bg-lightbackground overflow-hidden flex flex-col border-none">
+    <div class="w-[450px] h-[600px] dark:bg-background bg-lightbackground overflow-hidden flex flex-col border-none -z-20">
         <Navbar userPromise={userPromise}/>
         
         {#await userPromise}

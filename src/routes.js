@@ -1,14 +1,17 @@
 import Settings from "./pages/settings.svelte"
-import Streams from "./pages/streams.svelte"
+import Favourites from "./pages/favourites.svelte"
 import Help from "./pages/help.svelte"
 import Games from "./pages/games.svelte"
+import Streams from "./pages/streams.svelte"
 
 export default {
-    '/': Streams,
+    '/': Favourites,
 
     '/settings': Settings,
 
     '/help': Help,
 
-    '/games': Games
+    '/games': Games,
+
+    '/streams': Streams
 }
