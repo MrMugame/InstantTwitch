@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { checkAccessToken, getAllFollows, getFollows, getUser } from "../twitch/api";
+import { checkAccessToken, getAllFollows, getFollows, getUser, getUsers } from "../twitch/api";
 import { loadCache, saveCache, clearCache } from "../twitch/cache";
 import { settings as settingsStore } from "../twitch/settings";
 import { updateBadgeText } from "../twitch/updates";
@@ -72,7 +72,10 @@ export const loadFollows = async () => {
 
             for (let i = 0; i < total; i += 100) {
                 let res = await getAllFollows(user.id, 100, cursor);
-                follows = [...follows, ...res.data];
+                let ids = res.data.map((e) => e.to_id);
+                let users = await getUsers(ids);
+
+                follows = [...follows, ...users];
                 cursor = res.pagination.cursor;
                 total = res.total;
             }
