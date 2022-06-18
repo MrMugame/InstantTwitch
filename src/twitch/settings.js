@@ -13,7 +13,7 @@ const defaultSettings = {
     notifications: true,
     darkmode: true,
     sortingOption: SORTING.LARGETOSMALL,
-    hideOfflineChannels: false,
+    showOfflineChannels: true,
     valid: false
 }
 

@@ -113,6 +113,36 @@ export const refreshStreams = async () => {
     }
 }
 
+
+export const refreshFollows = async () => {
+    let user = await loadUser();
+
+    if (user != undefined) {
+        let total = 100;
+        let cursor = "";
+        let follows = [];
+
+        for (let i = 0; i < total; i += 100) {
+            let res = await getAllFollows(user.id, 100, cursor);
+            let ids = res.data.map((e) => e.to_id);
+            let users = await getUsers(ids);
+
+            follows = [...follows, ...users];
+            cursor = res.pagination.cursor;
+            total = res.total;
+        }
+
+        saveCache("follows", {
+            age: new Date().getTime(),
+            follows: follows
+        });
+
+        return follows
+    } else {
+        throw new Error();
+    }
+}
+
 export const logout = () => {
     clearCache();
     window.close();

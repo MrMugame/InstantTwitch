@@ -4,7 +4,7 @@
     import Loading from "../lib/loading.svelte"
     import { settings, SORTING } from "../twitch/settings";
     import { filter } from "../stores/filter"
-    import { loadFollows, loadStreams, refreshStreams } from "../stores/data";
+    import { loadFollows, loadStreams, refreshFollows, refreshStreams } from "../stores/data";
     import { onMount } from "svelte/internal";
     import { reload } from "../stores/reload";
     let loading = true;
@@ -15,8 +15,8 @@
         if (bool) {
             loading = true;
             filteredStreams = await refreshStreams();
-            if ($settings.hideOfflineChannels) {
-                let res = await loadFollows();
+            if ($settings.showOfflineChannels) {
+                let res = await refreshFollows();
                 filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
             }
             $reload = false;
@@ -26,7 +26,7 @@
 
     onMount(async () => {
         filteredStreams = await loadStreams(); 
-        if ($settings.hideOfflineChannels) {
+        if ($settings.showOfflineChannels) {
             let res = await loadFollows();
             filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id === e.id));
         }
@@ -72,7 +72,7 @@
         {#each filteredStreams as stream}
             <Stream stream={stream}/>
         {/each}
-        {#if $settings.hideOfflineChannels}
+        {#if $settings.showOfflineChannels}
             {#each filteredFollows as user}
                 <User account={user}/>
             {/each}
