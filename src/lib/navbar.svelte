@@ -1,5 +1,5 @@
 <script>
-    import User from './user.svelte';
+    import Account from './account.svelte';
     import { filter } from "../stores/filter"
     import { reload } from "../stores/reload"
  
@@ -17,7 +17,7 @@
     {#await userPromise}
         <h1>loading</h1>
     {:then user}
-        <User user={user}/>
+        <Account user={user}/>
     {:catch}
         <button class="bg-twitch rounded-full h-7 w-20 inline-flex items-center justify-center text-strongtext font-semibold font-sans text-base m-1 hover:opacity-80" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
             Login

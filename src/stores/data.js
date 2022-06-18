@@ -13,7 +13,7 @@ export const loadUser = async () => {
         if (validToken?.expires_in > 0) {
             let user = await getUser();
 
-            saveCache(user);
+            saveCache("user", user);
 
             return user
         } else {

@@ -58,6 +58,17 @@ export const getQueryGames = async (query = "", cursor = "") => {
 }
 
 
+export const getQueryStreams = async (query = "", cursor = "") => {
+    let response = await fetch("https://api.twitch.tv/helix/search/channels?query=" + query + "&after=" + cursor, {
+        headers: await getHeaders()
+    });
+    let data = await response.json();
+    return data
+}
+
+
+
+
 export const getAllFollows = async (userID, amount = 20, cursor = "") => {
     let response = await fetch(`https://api.twitch.tv/helix/users/follows?from_id=${userID}&first=${amount}&after=${cursor}`, {
         headers: await getHeaders()

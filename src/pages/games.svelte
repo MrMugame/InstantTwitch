@@ -67,13 +67,12 @@
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
             if (val != "") {
-                box.scrollTo(0, 0);
-                console.log("scrolled");
+                box?.scrollTo(0, 0);
                 let res = await getQueryGames(val);
                 searchCursor = res.cursor;
                 games = res.data;
             } else {
-                box.scrollTo(0, 0);
+                box?.scrollTo(0, 0);
                 searchCursor = "";
                 games = topgames;
             }

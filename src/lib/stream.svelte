@@ -9,7 +9,7 @@
     }
 
     const openTab = () => {
-        let url = "https://twitch.tv/" + (stream.user_name).toLowerCase();
+        let url = "https://twitch.tv/" + (stream.user_login).toLowerCase();
         chrome.tabs.create({ url: url });
     }
 
@@ -19,6 +19,10 @@
         let time_string = `${time_diff.getHours()-1}:${time_diff.getMinutes()}:${time_diff.getSeconds()}`
         time_string = time_diff.getDate()-1 > 0 ?  `${time_diff.getDate()-1}:` + time_string : time_string
         return time_string
+    }
+
+    const addComma = (num) => {
+        return new Intl.NumberFormat('en-GB').format(num)
     }
 </script>
 
@@ -31,7 +35,7 @@
         <div class="inline-flex justify-between items-center w-full">
             <h1 class="text-xl dark:text-strongtext text-lightstrongtext leading-5 font-sans font-bold mb-1">{stream.user_name}</h1>
             <div class="inline-flex items-center">
-                <h2 class="text-sm font-sans font-semibold text-red-600">{stream.viewer_count}</h2>
+                <h2 class="text-sm font-sans font-semibold text-red-600">{addComma(stream.viewer_count)}</h2>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-red-600 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
