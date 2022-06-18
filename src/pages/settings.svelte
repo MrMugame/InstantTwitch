@@ -36,6 +36,7 @@
     <h1 class="font-sans text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] dark:after:bg-strongborder after:bg-lightborder after:top-0 after:left-0 after:relative after:block mt-5">Appearance</h1>
     <Checkboxsetting name="Darkmode" bind:checked={$settings.darkmode}/>
     <Selectsetting name="Sorting" options={sortingOptions} bind:selected={$settings.sortingOption}/>
+    <Checkboxsetting name="Show Offline channels" bind:checked={$settings.hideOfflineChannels}/>
     
     <h1 class="font-sans text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] dark:after:bg-strongborder after:bg-lightborder after:top-0 after:left-0 after:relative after:block mt-5">Account</h1>
     

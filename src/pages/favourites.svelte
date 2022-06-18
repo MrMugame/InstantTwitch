@@ -15,8 +15,10 @@
         if (bool) {
             loading = true;
             filteredStreams = await refreshStreams();
-            let res = await loadFollows();
-            filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
+            if ($settings.hideOfflineChannels) {
+                let res = await loadFollows();
+                filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
+            }
             $reload = false;
             loading = false;
         }
@@ -24,8 +26,10 @@
 
     onMount(async () => {
         filteredStreams = await loadStreams(); 
-        let res = await loadFollows();
-        filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id === e.id));
+        if ($settings.hideOfflineChannels) {
+            let res = await loadFollows();
+            filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id === e.id));
+        }
         loading = false;
     })
 
@@ -69,12 +73,13 @@
         {#each filteredStreams as stream}
             <Stream stream={stream}/>
         {/each}
-
-        {#each filteredFollows as user}
-            <User account={user}/>
-        {:else}
-            <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">No results</h1>
-        {/each}
+        {#if $settings.hideOfflineChannels}
+            {#each filteredFollows as user}
+                <User account={user}/>
+            {:else}
+                <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">No results</h1>
+            {/each}
+        {/if}
     {:else}
         <Loading/>
     {/if}
