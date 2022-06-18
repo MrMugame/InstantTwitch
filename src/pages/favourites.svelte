@@ -76,9 +76,10 @@
         {#if $settings.hideOfflineChannels}
             {#each filteredFollows as user}
                 <User account={user}/>
-            {:else}
-                <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">No results</h1>
             {/each}
+        {/if}
+        {#if filteredStreams.length <= 0 && filteredFollows.length <= 0}
+            <h1 class="text-center font-roboto text-xl font-bold mt-10 dark:text-lighttext text-lightlighttext">No results</h1>
         {/if}
     {:else}
         <Loading/>

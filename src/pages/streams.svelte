@@ -70,12 +70,12 @@
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
             if (val != "") {
-                box.scrollTo(0, 0);
+                box?.scrollTo(0, 0);
                 let res = await getQueryStreams(val);
                 searchCursor = res.cursor;
                 streams = res.data;
             } else {
-                box.scrollTo(0, 0);
+                box?.scrollTo(0, 0);
                 searchCursor = "";
                 streams = topstreams;
             }
