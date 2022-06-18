@@ -33,21 +33,20 @@
         loading = false;
     })
 
-    $: {
-        const searchTerm = $filter.toLowerCase();
-        (async () => {
-            const streams = await loadStreams();
-            filteredStreams = streams.filter(stream => {
-                return stream.user_name.toLowerCase().includes(searchTerm)
-            });
+    filter.subscribe(async (val) => {
+        const searchTerm = val.toLowerCase();
 
-            let res = await loadFollows();
-            let users = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
-            filteredFollows = users.filter(user => {
-                return user.display_name.toLowerCase().includes(searchTerm)
-            });
-        })();
-    }
+        const streams = await loadStreams();
+        filteredStreams = streams.filter(stream => {
+            return stream.user_name.toLowerCase().includes(searchTerm)
+        });
+
+        let res = await loadFollows();
+        let users = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
+        filteredFollows = users.filter(user => {
+            return user.display_name.toLowerCase().includes(searchTerm)
+        });
+    })
 
     $: {
         if ($settings.sortingOption === SORTING.LARGETOSMALL) {
