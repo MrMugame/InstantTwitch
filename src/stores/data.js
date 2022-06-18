@@ -43,7 +43,7 @@ export const loadStreams = async () => {
         if (user != undefined) {
             let streams = await getFollows(user.id);
             
-            updateBadgeText(streams.length);
+            updateBadgeText(streams.length || "");
 
             saveCache("streams", {
                 age: new Date().getTime(),
