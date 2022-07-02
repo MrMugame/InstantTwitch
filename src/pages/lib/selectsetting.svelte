@@ -9,12 +9,6 @@
 
 
 <div class="flex items-center my-2 justify-between">
-    <!-- <h3 class="text-base dark:text-lighttext text-lightlighttext font-semibold">{name}</h3>
-    <select bind:value={selected} class="bg-twitch text-strongtext rounded-full h-6 text-base font-medium pl-1 pr-3 text-ellipsis w-[95px] ">
-        {#each Object.entries(options) as [title, value]}
-            <option value={value}>{title}</option>
-        {/each}
-    </select> -->
     <h3 class="text-base dark:text-lighttext text-lightlighttext font-semibold">{name}</h3>
     <div class="relative">
         <button on:click={() => show = !show} class="text-strongtext bg-twitch hover:opacity-80 font-medium rounded-full text-base px-3 py-2.5 inline-flex items-center h-6 w-[95px] justify-between" type="button">

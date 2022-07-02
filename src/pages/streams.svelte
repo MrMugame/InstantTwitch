@@ -1,7 +1,7 @@
 <script>
-    import Stream from "../lib/stream.svelte"
-    import User from "../lib/user.svelte"
-    import Loading from "../lib/loading.svelte"
+    import Stream from "./lib/stream.svelte"
+    import User from "./lib/user.svelte"
+    import Loading from "./lib/loading.svelte"
     import { getQueryStreams, getTopStreams } from "../twitch/api";
     import { onMount } from "svelte";
     import { reload } from "../stores/reload";

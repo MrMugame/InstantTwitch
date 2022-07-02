@@ -1,66 +1,75 @@
 <script>
-    import Stream from "../lib/stream.svelte"
-    import User from "../lib/user.svelte"
-    import Loading from "../lib/loading.svelte"
-    import { settings, SORTING } from "../twitch/settings";
-    import { filter } from "../stores/filter"
-    import { loadFollows, loadStreams, refreshFollows, refreshStreams } from "../stores/data";
+    import Stream from "./lib/stream.svelte"
+    import User from "./lib/user.svelte"
+    import Loading from "./lib/loading.svelte"
+    import { get } from "svelte/store";
     import { onMount } from "svelte/internal";
+    import { filter } from "../stores/filter"
     import { reload } from "../stores/reload";
+    import { stores } from "../stores/stores";
+    import { sendMessage } from "../helpers/helpers"
+    import { settings, SORTING } from "../twitch/settings";
+
     let loading = true;
     let filteredStreams = [];
     let filteredFollows = [];
 
+    const filterFollows = (res) => {
+        return res.filter(e => !filteredStreams.some(s => s.user_id === e.id))
+    }
+
+    
+    onMount(async () => {
+        filteredStreams = get(stores.followedStreams);
+        if ($settings.showOfflineChannels) {
+            const res = get(stores.followedUsers); 
+            filteredFollows = filterFollows(res);
+        }
+        loading = false;
+    });
+
     reload.subscribe(async (bool) => {
         if (bool) {
             loading = true;
-            filteredStreams = await refreshStreams();
-            if ($settings.showOfflineChannels) {
-                let res = await refreshFollows();
-                filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
-            }
+            sendMessage("refresh", false, true);
             $reload = false;
             loading = false;
         }
-    })
-
-    onMount(async () => {
-        filteredStreams = await loadStreams(); 
-        if ($settings.showOfflineChannels) {
-            let res = await loadFollows();
-            filteredFollows = res.filter(e => !filteredStreams.some(s => s.user_id === e.id));
-        }
-        loading = false;
-    })
+    });
 
     filter.subscribe(async (val) => {
         const searchTerm = val.toLowerCase();
 
-        const streams = await loadStreams();
+        const streams = get(stores.followedStreams);
         filteredStreams = streams.filter(stream => {
             return stream.user_name.toLowerCase().includes(searchTerm)
         });
 
-        let res = await loadFollows();
-        let users = res.filter(e => !filteredStreams.some(s => s.user_id == e.id));
+        const res = get(stores.followedUsers);
+        const users = filterFollows(res)
         filteredFollows = users.filter(user => {
             return user.display_name.toLowerCase().includes(searchTerm)
         });
-    })
+    });
 
     $: {
-        if ($settings.sortingOption === SORTING.LARGETOSMALL) {
-            filteredStreams.sort((a, b) => a.viewer_count < b.viewer_count ? 1 : -1);
-            filteredFollows.sort((a, b) => a.view_count < b.view_count ? 1 : -1);
-        } else if ($settings.sortingOption === SORTING.SMALLTOLARGE) {
-            filteredStreams.sort((a, b) => a.viewer_count > b.viewer_count ? 1 : -1);
-            filteredFollows.sort((a, b) => a.view_count > b.view_count ? 1 : -1);
-        } else if ($settings.sortingOption === SORTING.ALPHABETICALLY) {
-            filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
-            filteredFollows.sort((a, b) => a.display_name.localeCompare(b.display_name));
-        } else if ($settings.sortingOption === SORTING.REVERSEALPHABETICALLY) {
-            filteredStreams.sort((a, b) => b.user_name.localeCompare(a.user_name));
-            filteredFollows.sort((a, b) => b.display_name.localeCompare(a.display_name));
+        switch ($settings.sortingOption) {
+            case SORTING.LARGETOSMALL:
+                filteredStreams.sort((a, b) => a.viewer_count < b.viewer_count ? 1 : -1);
+                filteredFollows.sort((a, b) => a.view_count < b.view_count ? 1 : -1);
+                break;
+            case SORTING.SMALLTOLARGE:
+                filteredStreams.sort((a, b) => a.viewer_count > b.viewer_count ? 1 : -1);
+                filteredFollows.sort((a, b) => a.view_count > b.view_count ? 1 : -1);
+                break;
+            case SORTING.ALPHABETICALLY:
+                filteredStreams.sort((a, b) => a.user_name.localeCompare(b.user_name));
+                filteredFollows.sort((a, b) => a.display_name.localeCompare(b.display_name));
+                break;
+            case SORTING.REVERSEALPHABETICALLY:
+                filteredStreams.sort((a, b) => b.user_name.localeCompare(a.user_name));
+                filteredFollows.sort((a, b) => b.display_name.localeCompare(a.display_name));
+                break;
         }
     }
 

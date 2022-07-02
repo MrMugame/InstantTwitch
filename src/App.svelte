@@ -1,16 +1,16 @@
 <script>
     import Router from 'svelte-spa-router'
     import routes from "./routes"
-    import Navbar from "./lib/navbar.svelte";
-    import Loading from './lib/loading.svelte';
-    import Bottombar from "./lib/bottombar.svelte"
+    import Navbar from "./pages/lib/navbar.svelte";
+    import Loading from './pages/lib/loading.svelte';
+    import Bottombar from "./pages/lib/bottombar.svelte"
     import { settings } from "./twitch/settings";
     import { onMount } from 'svelte/internal';
-    import { loadUser } from './stores/data';
     import { location } from "svelte-spa-router"
     import { filter } from './stores/filter';
+    import { initStores, stores } from './stores/stores';
 
-    let userPromise = loadUser();
+    let userPromise = initStores(stores);
 
     onMount(async () => {
         await settings.load();
@@ -18,9 +18,7 @@
 
     location.subscribe(() => {
         $filter = "";
-    })
-
-
+    });
 </script>
 
 

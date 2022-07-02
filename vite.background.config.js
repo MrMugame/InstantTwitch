@@ -6,7 +6,7 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                app: 'src/background.js',
+                app: 'src/background/background.js',
             },
             output: {
                 entryFileNames: 'background.js',

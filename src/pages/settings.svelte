@@ -1,9 +1,8 @@
 <script>
     import { settings, SORTING } from "../twitch/settings";
-    import Selectsetting from "../lib/selectsetting.svelte";
-    import Checkboxsetting from "../lib/checkboxsetting.svelte";
-    import Buttonsetting from "../lib/buttonsetting.svelte";
-    import { logout } from "../stores/data";
+    import Selectsetting from "./lib/selectsetting.svelte";
+    import Checkboxsetting from "./lib/checkboxsetting.svelte";
+    import Buttonsetting from "./lib/buttonsetting.svelte";
 
     settings.subscribe(() => {
         settings.save();
@@ -23,6 +22,11 @@
         "Viewercount descending": SORTING.LARGETOSMALL, 
         "Alphabetically": SORTING.ALPHABETICALLY,
         "Reverse alphabetically": SORTING.REVERSEALPHABETICALLY
+    }
+
+    const logout = async () => {
+        await chrome.storage.local.clear();
+        window.close();
     }
 </script>
 
