@@ -1,3 +1,5 @@
+import { get } from "svelte/store";
+import { initStores, stores } from "../stores/stores";
 import { refreshCurrentUser, refreshFollowedStreams, refreshFollowedUsers } from "./api";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
@@ -13,9 +15,7 @@ const createURL = () => {
     return url.href
 }
 
-chrome.runtime.onMessage.addListener((request) => {
-    if (request.data != "OAUTH") { return }
-
+const authorize = () => {
     return new Promise(resolve => {
         chrome.tabs.create({ url: createURL() }, tab => {
             chrome.tabs.onUpdated.addListener((tabId, info) => {
@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((request) => {
                         let parameters = new URLSearchParams(url.hash);
     
                         if (parameters.get("#access_token") != null) {
-                            chrome.storage.local.set({access_token: parameters.get("#access_token")});
+                            stores.accessToken.set(parameters.get("#access_token"))
                             chrome.tabs.remove(newtab.id);
                             resolve();
                         }
@@ -34,14 +34,14 @@ chrome.runtime.onMessage.addListener((request) => {
             });
         });
     });
-})
+}
 
 const refresh = async (sendNotification = false, resetAlarm = false) => {
     if (resetAlarm) {
         chrome.alarms.clear("refresh");
     }
 
-    const currentUser = await refreshCurrentUser(true);
+    const currentUser = await refreshCurrentUser(get(stores.accessToken));
     if (currentUser != null) {
         await refreshFollowedStreams(currentUser, sendNotification);
         await refreshFollowedUsers(currentUser);
@@ -54,14 +54,18 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
 
 const run = () => {
     console.log("yay");
+    initStores();
     refresh(false, true);
 }
 
 chrome.runtime.onMessage.addListener(message => {
-    switch (message.name) {
-        case "refresh":
-            refresh(...message.args);
+    const mapy = {
+        "refresh": refresh,
+        "authorize": authorize,
     }
+
+    let func = mapy[message.name];
+    func(...message.args);
 })
 
 chrome.runtime.onStartup.addListener(() => {
@@ -75,3 +79,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.alarms.onAlarm.addListener(alarm => {
     refresh(true, false);
 });
+
+stores.accessToken.subscribe(value => {
+    refresh(false, true);
+})

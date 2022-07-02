@@ -1,6 +1,6 @@
 <script>
-    import Loading from "../lib/loading.svelte"
-    import Game from "../lib/game.svelte"
+    import Loading from "./lib/loading.svelte"
+    import Game from "./lib/game.svelte"
     import { getQueryGames, getTopGames } from "../twitch/api";
     import { onMount } from "svelte";
     import { filter } from "../stores/filter";

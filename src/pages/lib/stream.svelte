@@ -1,4 +1,6 @@
 <script>
+    import { createTab } from "../../helpers/helpers";
+
     export let stream;
 
     const parseThumbnailUrl = (url, w = 120) => {
@@ -10,7 +12,7 @@
 
     const openTab = () => {
         let url = "https://twitch.tv/" + (stream.user_login).toLowerCase();
-        chrome.tabs.create({ url: url });
+        createTab(url)
     }
 
     const getTime = () => {

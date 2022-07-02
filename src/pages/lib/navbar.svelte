@@ -4,6 +4,7 @@
     import { reload } from "../../stores/reload"
     import { get } from 'svelte/store';
     import { stores } from '../../stores/stores';
+    import { sendMessage } from '../../helpers/helpers';
  
     export let userPromise;
 </script>
@@ -21,7 +22,7 @@
     {:then}
         <Account user={get(stores.currentUser)}/>
     {:catch}
-        <button class="bg-twitch rounded-full h-7 w-20 inline-flex items-center justify-center text-strongtext font-semibold font-sans text-base m-1 hover:opacity-80" on:click={() => {chrome.runtime.sendMessage({ data: "OAUTH" })}}>
+        <button class="bg-twitch rounded-full h-7 w-20 inline-flex items-center justify-center text-strongtext font-semibold font-sans text-base m-1 hover:opacity-80" on:click={() => {sendMessage("authorize")}}>
             Login
         </button>
     {/await}

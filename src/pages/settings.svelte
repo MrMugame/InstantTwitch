@@ -3,6 +3,7 @@
     import Selectsetting from "./lib/selectsetting.svelte";
     import Checkboxsetting from "./lib/checkboxsetting.svelte";
     import Buttonsetting from "./lib/buttonsetting.svelte";
+    import { logout } from "../helpers/helpers";
 
     settings.subscribe(() => {
         settings.save();
@@ -22,11 +23,6 @@
         "Viewercount descending": SORTING.LARGETOSMALL, 
         "Alphabetically": SORTING.ALPHABETICALLY,
         "Reverse alphabetically": SORTING.REVERSEALPHABETICALLY
-    }
-
-    const logout = async () => {
-        await chrome.storage.local.clear();
-        window.close();
     }
 </script>
 

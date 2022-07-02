@@ -1,4 +1,7 @@
 <script>
+import { createTab } from "../../helpers/helpers";
+
+
     export let game;
 
     const parseThumbnailUrl = (url, w = 120) => {
@@ -11,7 +14,7 @@
 
     const openTab = () => {
         let url = "https://twitch.tv/directory/game/" + (game.name).toLowerCase();
-        chrome.tabs.create({ url: url });
+        createTab(url);
     }
 </script>
 

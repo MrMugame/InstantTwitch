@@ -1,17 +1,8 @@
+import { stores } from "../stores/stores";
+import { get } from "svelte/store";
+
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
-const getAccessToken = async () => {
-    return new Promise(resolve => {
-        chrome.storage.local.get(["access_token"], res => resolve(res.access_token))
-    });
-}
-
-const getHeaders = async () => {
-    return {
-        "Authorization": "Bearer " + await getAccessToken(),
-        "Client-Id": CLIENTID
-    }
-}
 
 export const request = async (url, params = {}) => {
     const formatedUrl = new URL("https://api.twitch.tv/helix/" + url);
@@ -27,7 +18,10 @@ export const request = async (url, params = {}) => {
     }
 
     const response = await fetch(formatedUrl, {
-            headers: await getHeaders()
+            headers: {
+                "Authorization": "Bearer " + get(stores.accessToken),
+                "Client-Id": CLIENTID
+            }
     });
 
     return await response.json();

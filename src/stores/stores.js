@@ -1,11 +1,13 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 
 export const initStores = async (stores) => {
-
     for (let key of Object.keys(stores)) {
         stores[key].set((await chrome.storage.local.get(key))[key] || null);
     }
-    return true;
+
+    if (get(stores.accessToken) == null) {
+        throw new Error();
+    }
 }
 
 const createStores = () => {
@@ -13,22 +15,15 @@ const createStores = () => {
         currentUser: writable(null),
         followedStreams: writable(null),
         followedUsers: writable(null),
+        accessToken: writable(null),
     }
 
-    stores.currentUser.subscribe(value => {
-        if (!value) return;
-        chrome.storage.local.set({currentUser: value});
-    });
-
-    stores.followedStreams.subscribe(value => {
-        if (!value) return;
-        chrome.storage.local.set({followedStreams: value});
-    });
-
-    stores.followedUsers.subscribe(value => {
-        if (!value) return;
-        chrome.storage.local.set({followedUsers: value});
-    });
+    for (let key of Object.keys(stores)) {
+        stores[key].subscribe(value => {
+            if (!value) return;
+            chrome.storage.local.set({[key]: value});
+        });
+    }
 
     return stores
 }
