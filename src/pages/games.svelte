@@ -1,7 +1,7 @@
 <script>
     import Loading from "./lib/loading.svelte"
     import Game from "./lib/game.svelte"
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { filter } from "../stores/filter";
     import { reload } from "../stores/reload";
     import { fetchQueryGames, fetchTopGames } from "../helpers/api";
@@ -46,7 +46,7 @@
         }
     }
 
-    reload.subscribe(async (bool) => {
+    const unload = reload.subscribe(async (bool) => {
         if (bool) {
             loading = true;
             if ($filter != "") {
@@ -63,7 +63,7 @@
     })
     
     let timeout;
-    filter.subscribe(async val => {
+    const unfilter = filter.subscribe(async val => {
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
             if (val != "") {
@@ -78,6 +78,11 @@
             }
         }, 500);
     });
+
+    onDestroy(() => {
+        unload();
+        unfilter();
+    })
 </script>
 
 <div on:scroll={update} bind:this={box} class="flex flex-1 justify-center overflow-y-scroll">

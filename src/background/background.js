@@ -41,7 +41,7 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
         chrome.alarms.clear("refresh");
     }
 
-    console.log("reload")
+    console.log("reload");
 
     const currentUser = await refreshCurrentUser(await stores.accessToken.load());
     if (currentUser != null) {
@@ -50,7 +50,7 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
     }
 
     if (resetAlarm) {
-        chrome.alarms.create("refresh", { periodInMinutes: 1 });
+        chrome.alarms.create("refresh", { periodInMinutes: (await stores.settings.load()).fetchCycle || 2.5});
     }
 }
 

@@ -2,7 +2,7 @@
     import Stream from "./lib/stream.svelte"
     import User from "./lib/user.svelte"
     import Loading from "./lib/loading.svelte"
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { reload } from "../stores/reload";
     import { filter } from "../stores/filter";
     import { fetchQueryStreams, fetchTopStreams } from "../helpers/api";
@@ -49,7 +49,7 @@
         }
     }
 
-    reload.subscribe(async (bool) => {
+    const unload = reload.subscribe(async (bool) => {
         if (bool) {
             loading = true;
             if ($filter != "") {
@@ -66,7 +66,7 @@
     })
     
     let timeout;
-    filter.subscribe(async val => {
+    const unfilter = filter.subscribe(async val => {
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
             if (val != "") {
@@ -81,6 +81,11 @@
             }
         }, 500);
     });
+
+    onDestroy(() => {
+        unload();
+        unfilter();
+    })
 </script>
 
 <div bind:this={box} on:scroll={update} class="overflow-y-scroll flex-1">

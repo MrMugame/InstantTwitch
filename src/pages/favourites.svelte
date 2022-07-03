@@ -8,6 +8,7 @@
     import { stores } from "../stores/stores";
     import { sendMessage } from "../helpers/helpers"
     import { SORTING } from "../stores/settings";
+import { onDestroy } from "svelte";
 
     let loading = true;
     let filteredStreams = [];
@@ -27,7 +28,8 @@
         loading = false;
     });
 
-    reload.subscribe(async (bool) => {
+    const unload = reload.subscribe(async (bool) => {
+        console.log(bool);
         if (bool) {
             loading = true;
             sendMessage("refresh", false, true);
@@ -35,7 +37,7 @@
         }
     });
 
-    filter.subscribe(async (val) => {
+    const unfilter = filter.subscribe(async (val) => {
         const searchTerm = val.toLowerCase();
 
         const streams = get(stores.followedStreams);
@@ -71,6 +73,10 @@
         }
     }
 
+    onDestroy(() => {
+        unload();
+        unfilter();
+    });
 </script>
 
 

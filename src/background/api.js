@@ -48,15 +48,11 @@ export const refreshFollowedStreams = async (user, notification) => {
         
         let oldStreams = get(stores.followedStreams) || [];
 
-        console.log(oldStreams, streams)
-        
         let result = streams.filter(newVal => !oldStreams.some(oldVal => oldVal.id === newVal.id));
-
-        console.log(result);
 
         result = result.map(x => x.user_name);
         let msg = result.join(", ");
-        
+
         if (msg != "") {
             msg = msg.replace(/,(?!.*,)/, " and");
             sendNotification(msg + " " + (result.length > 1 ? "are" : "is") + " now live!")

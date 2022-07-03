@@ -11,5 +11,4 @@ export const defaultSettings = {
     darkmode: true,
     sortingOption: SORTING.LARGETOSMALL,
     showOfflineChannels: true,
-    valid: false
 }
