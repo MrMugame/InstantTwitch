@@ -54,9 +54,8 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
     }
 }
 
-const run = () => {
-    console.log("yay");
-    initStores(stores);
+const run = async () => {
+    await initStores(stores);
     refresh(false, true);
 }
 

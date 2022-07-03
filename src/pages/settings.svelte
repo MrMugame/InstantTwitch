@@ -9,6 +9,8 @@
 
     let settings = stores.settings;
 
+    settings.set({...$settings, valid: true});
+
     let intervalOptions = {
         "1min": 1, 
         "2.5min": 2.5, 
@@ -41,8 +43,4 @@
     <h1 class="font-sans text-xl font-bold dark:text-strongtext text-lightstrongtext after:w-full after:h-[2px] dark:after:bg-strongborder after:bg-lightborder after:top-0 after:left-0 after:relative after:block mt-5">Account</h1>
     
     <Buttonsetting name="Logout" on:click={() => logout()}></Buttonsetting>
-    
-
-    <Selectsetting name="Data lifetime" options={intervalOptions} bind:selected={$settings.dataLifeTime}/>
-
 </div>

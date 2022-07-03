@@ -1,3 +1,5 @@
+import { sendNotification } from "../helpers/helpers";
+import { get } from "svelte/store";
 import { request } from "../helpers/request";
 import { stores } from "../stores/stores";
 
@@ -35,12 +37,35 @@ export const refreshCurrentUser = async (tokenAvailable) => {
     return currentUser
 }
 
-export const refreshFollowedStreams = async (user, sendNotification) => {
+export const refreshFollowedStreams = async (user, notification) => {
+    await stores.settings.load();
+
     let streams = await fetchFollowedStreams(user);
 
-    // notificatioms
-    stores.followedStreams.set(streams);
+    
+    if (notification && get(stores.settings).notifications) {
+        await stores.followedStreams.load();
+        
+        let oldStreams = get(stores.followedStreams) || [];
 
+        console.log(oldStreams, streams)
+        
+        let result = streams.filter(newVal => !oldStreams.some(oldVal => oldVal.id === newVal.id));
+
+        console.log(result);
+
+        result = result.map(x => x.user_name);
+        let msg = result.join(", ");
+        
+        if (msg != "") {
+            msg = msg.replace(/,(?!.*,)/, " and");
+            sendNotification(msg + " " + (result.length > 1 ? "are" : "is") + " now live!")
+        }
+
+    }
+
+    stores.followedStreams.set(streams);
+    
     return streams
 }
 

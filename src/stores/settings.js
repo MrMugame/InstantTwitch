@@ -6,10 +6,10 @@ export const SORTING = {
 }
 
 export const defaultSettings = {
-    dataLifeTime: 10,
     fetchCycle: 2.5,
     notifications: true,
     darkmode: true,
     sortingOption: SORTING.LARGETOSMALL,
-    showOfflineChannels: true
+    showOfflineChannels: true,
+    valid: false
 }

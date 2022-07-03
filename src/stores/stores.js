@@ -17,6 +17,7 @@ const createStore = (name, initValue) => {
         sync: () => {
             subscribe(value => {
                 if (!value) return;
+                if (!value?.valid) return;
                 chrome.storage.local.set({[name]: value});
             });
         }
