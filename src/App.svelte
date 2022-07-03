@@ -4,17 +4,14 @@
     import Navbar from "./pages/lib/navbar.svelte";
     import Loading from './pages/lib/loading.svelte';
     import Bottombar from "./pages/lib/bottombar.svelte"
-    import { settings } from "./twitch/settings";
-    import { onMount } from 'svelte/internal';
     import { location } from "svelte-spa-router"
     import { filter } from './stores/filter';
-    import { initStores, stores } from './stores/stores';
+    import { initStores, stores, subscribeStores } from './stores/stores';
+
+    let settings = stores.settings;
 
     let userPromise = initStores(stores);
-
-    onMount(async () => {
-        await settings.load();
-    });
+    subscribeStores(stores);
 
     location.subscribe(() => {
         $filter = "";

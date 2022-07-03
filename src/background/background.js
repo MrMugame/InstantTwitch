@@ -41,7 +41,9 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
         chrome.alarms.clear("refresh");
     }
 
-    const currentUser = await refreshCurrentUser(get(stores.accessToken));
+    console.log("reload")
+
+    const currentUser = await refreshCurrentUser(await stores.accessToken.load());
     if (currentUser != null) {
         await refreshFollowedStreams(currentUser, sendNotification);
         await refreshFollowedUsers(currentUser);
@@ -54,7 +56,7 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
 
 const run = () => {
     console.log("yay");
-    initStores();
+    initStores(stores);
     refresh(false, true);
 }
 
@@ -81,5 +83,6 @@ chrome.alarms.onAlarm.addListener(alarm => {
 });
 
 stores.accessToken.subscribe(value => {
-    refresh(false, true);
+    if (!value) return
+    run();
 })

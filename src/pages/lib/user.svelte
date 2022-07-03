@@ -1,10 +1,13 @@
 <script>
+    import { createTab } from "../../helpers/helpers";
+
+
     export let user = null;
     export let account = null;
 
     const openTab = () => {
         let url = "https://twitch.tv/" + (user?.broadcaster_login ?? account.login ).toLowerCase();
-        chrome.tabs.create({ url: url });
+        createTab(url);
     }
 </script>
 

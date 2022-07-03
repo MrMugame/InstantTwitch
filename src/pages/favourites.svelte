@@ -3,12 +3,11 @@
     import User from "./lib/user.svelte"
     import Loading from "./lib/loading.svelte"
     import { get } from "svelte/store";
-    import { onMount } from "svelte/internal";
     import { filter } from "../stores/filter"
     import { reload } from "../stores/reload";
     import { stores } from "../stores/stores";
     import { sendMessage } from "../helpers/helpers"
-    import { settings, SORTING } from "../twitch/settings";
+    import { SORTING } from "../stores/settings";
 
     let loading = true;
     let filteredStreams = [];
@@ -18,13 +17,13 @@
         return res.filter(e => !filteredStreams.some(s => s.user_id === e.id))
     }
 
-    
-    onMount(async () => {
-        filteredStreams = get(stores.followedStreams);
-        if ($settings.showOfflineChannels) {
-            const res = get(stores.followedUsers); 
-            filteredFollows = filterFollows(res);
-        }
+    stores.followedStreams.subscribe(value => {
+        filteredStreams = value;
+        loading = false;
+    });
+
+    stores.followedUsers.subscribe(value => {
+        filteredFollows = filterFollows(value);
         loading = false;
     });
 
@@ -33,7 +32,6 @@
             loading = true;
             sendMessage("refresh", false, true);
             $reload = false;
-            loading = false;
         }
     });
 
@@ -46,14 +44,14 @@
         });
 
         const res = get(stores.followedUsers);
-        const users = filterFollows(res)
+        const users = filterFollows(res);
         filteredFollows = users.filter(user => {
             return user.display_name.toLowerCase().includes(searchTerm)
         });
     });
 
     $: {
-        switch ($settings.sortingOption) {
+        switch (get(stores.settings).sortingOption) {
             case SORTING.LARGETOSMALL:
                 filteredStreams.sort((a, b) => a.viewer_count < b.viewer_count ? 1 : -1);
                 filteredFollows.sort((a, b) => a.view_count < b.view_count ? 1 : -1);
@@ -81,7 +79,7 @@
         {#each filteredStreams as stream}
             <Stream stream={stream}/>
         {/each}
-        {#if $settings.showOfflineChannels}
+        {#if get(stores.settings).showOfflineChannels}
             {#each filteredFollows as user}
                 <User account={user}/>
             {/each}

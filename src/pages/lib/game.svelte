@@ -1,6 +1,5 @@
 <script>
-import { createTab } from "../../helpers/helpers";
-
+    import { createTab } from "../../helpers/helpers";
 
     export let game;
 

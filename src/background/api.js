@@ -38,8 +38,7 @@ export const refreshCurrentUser = async (tokenAvailable) => {
 export const refreshFollowedStreams = async (user, sendNotification) => {
     let streams = await fetchFollowedStreams(user);
 
-    // notification
-
+    // notificatioms
     stores.followedStreams.set(streams);
 
     return streams

@@ -1,13 +1,13 @@
 <script>
-    import { settings, SORTING } from "../twitch/settings";
     import Selectsetting from "./lib/selectsetting.svelte";
     import Checkboxsetting from "./lib/checkboxsetting.svelte";
     import Buttonsetting from "./lib/buttonsetting.svelte";
     import { logout } from "../helpers/helpers";
+    import { stores } from "../stores/stores";
+    import { SORTING } from "../stores/settings";
 
-    settings.subscribe(() => {
-        settings.save();
-    });
+
+    let settings = stores.settings;
 
     let intervalOptions = {
         "1min": 1, 
