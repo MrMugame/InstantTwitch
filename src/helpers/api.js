@@ -1,33 +1,17 @@
-// export const getTopGames = async (amount = 20, cursor = "") => {
-//     let response = await fetch("https://api.twitch.tv/helix/games/top?first=" + amount + "&after=" + cursor, {
-//             headers: await getHeaders()
-//     });
-//     let data = await response.json();
-//     return data
-// }
+import { request } from "./request";
 
-// export const getTopStreams = async (amount = 20, cursor = "") => {
-//     let response = await fetch("https://api.twitch.tv/helix/streams?first=" + amount + "&after=" + cursor, {
-//         headers: await getHeaders()
-//     });
-//     let data = await response.json();
-//     return data
-// }
+export const fetchTopGames = async (amount = 20, cursor = "") => {
+    return (await request("games/top", {"first": amount, "after": cursor}));
+}
 
-// export const getQueryGames = async (query = "", cursor = "") => {
-//     let response = await fetch("https://api.twitch.tv/helix/search/categories?query=" + query + "&after=" + cursor, {
-//         headers: await getHeaders()
-//     });
-//     let data = await response.json();
-//     return data
-// }
+export const fetchTopStreams = async (amount = 20, cursor = "") => {
+    return (await request("streams", {"first": amount, "after": cursor}));
+}
 
+export const fetchQueryGames = async (query = "", cursor = "") => {
+    return (await request("search/categories", {"query": query, "after": cursor}));
+}
 
-// export const getQueryStreams = async (query = "", cursor = "") => {
-//     let response = await fetch("https://api.twitch.tv/helix/search/channels?query=" + query + "&after=" + cursor, {
-//         headers: await getHeaders()
-//     });
-//     let data = await response.json();
-//     return data
-// }
-
+export const fetchQueryStreams = async (query = "", cursor = "") => {
+    return (await request("search/channels", {"query": query, "after": cursor}));
+}

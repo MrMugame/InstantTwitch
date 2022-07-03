@@ -1,10 +1,10 @@
 <script>
     import Loading from "./lib/loading.svelte"
     import Game from "./lib/game.svelte"
-    import { getQueryGames, getTopGames } from "../twitch/api";
     import { onMount } from "svelte";
     import { filter } from "../stores/filter";
     import { reload } from "../stores/reload";
+    import { fetchQueryGames, fetchTopGames } from "../helpers/api";
 
     let topgames = [];
     let games = [];
@@ -23,11 +23,11 @@
     const loadMore = async () => {
         loadingMore = true;
         if (searchCursor != "") {
-            let data = await getQueryGames($filter, searchCursor);
+            let data = await fetchQueryGames($filter, searchCursor);
             games = [...games, ...data.data];
             searchCursor = data.pagination.cursor;
         } else {
-            let data = await getTopGames(24, cursor);
+            let data = await fetchTopGames(24, cursor);
             topgames = [...topgames, ...data.data]
             games = topgames;
             cursor = data.pagination.cursor;
@@ -50,7 +50,7 @@
         if (bool) {
             loading = true;
             if ($filter != "") {
-                games = (await getQueryGames($filter)).data;
+                games = (await fetchQueryGames($filter)).data;
             } else {
                 loadingMore = true;
                 cursor = "";
@@ -68,7 +68,7 @@
         timeout = setTimeout(async () => {
             if (val != "") {
                 box?.scrollTo(0, 0);
-                let res = await getQueryGames(val);
+                let res = await fetchQueryGames(val);
                 searchCursor = res.cursor;
                 games = res.data;
             } else {

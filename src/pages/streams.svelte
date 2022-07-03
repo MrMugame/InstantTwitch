@@ -2,10 +2,10 @@
     import Stream from "./lib/stream.svelte"
     import User from "./lib/user.svelte"
     import Loading from "./lib/loading.svelte"
-    import { getQueryStreams, getTopStreams } from "../twitch/api";
     import { onMount } from "svelte";
     import { reload } from "../stores/reload";
     import { filter } from "../stores/filter";
+    import { fetchQueryStreams, fetchTopStreams } from "../helpers/api";
 
     let streams = [];
     let topstreams = [];
@@ -16,7 +16,7 @@
     let box;
 
     onMount(async () => {
-        let data = await getTopStreams();
+        let data = await fetchTopStreams();
         topstreams = data.data;
         cursor = data.cursor;
         streams = topstreams;
@@ -26,11 +26,11 @@
     const loadMore = async () => {
         loadingMore = true;
         if (searchCursor != "") {
-            let data = await getQueryStreams($filter, searchCursor);
+            let data = await fetchQueryStreams($filter, searchCursor);
             streams = [...streams, ...data.data];
             searchCursor = data.pagination.cursor;
         } else {
-            let data = await getTopStreams(24, cursor);
+            let data = await fetchTopStreams(24, cursor);
             topstreams = [...topstreams, ...data.data]
             streams = topstreams;
             cursor = data.pagination.cursor;
@@ -53,7 +53,7 @@
         if (bool) {
             loading = true;
             if ($filter != "") {
-                streams = (await getQueryStreams($filter)).data;
+                streams = (await fetchQueryStreams($filter)).data;
             } else {
                 loadingMore = true;
                 cursor = "";
@@ -71,7 +71,7 @@
         timeout = setTimeout(async () => {
             if (val != "") {
                 box?.scrollTo(0, 0);
-                let res = await getQueryStreams(val);
+                let res = await fetchQueryStreams(val);
                 searchCursor = res.cursor;
                 streams = res.data;
             } else {
