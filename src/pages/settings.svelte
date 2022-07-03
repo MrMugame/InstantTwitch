@@ -9,7 +9,7 @@
 
     let settings = stores.settings;
 
-    settings.set({...$settings, valid: true});
+    settings.sync();
 
     let intervalOptions = {
         "1min": 1, 

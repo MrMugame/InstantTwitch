@@ -1,5 +1,4 @@
-import { get } from "svelte/store";
-import { initStores, stores } from "../stores/stores";
+import { initStores, stores, syncStores } from "../stores/stores";
 import { refreshCurrentUser, refreshFollowedStreams, refreshFollowedUsers } from "./api";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
@@ -56,6 +55,7 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
 
 const run = async () => {
     await initStores(stores);
+    syncStores(stores)
     refresh(false, true);
 }
 

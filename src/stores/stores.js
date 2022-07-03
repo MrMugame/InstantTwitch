@@ -9,10 +9,14 @@ const createStore = (name, initValue) => {
         subscribe,
         update,
         set,
-        load: async () => {
-            const value = (await chrome.storage.local.get(name))[name] || get({subscribe});
-            set(value);
-            return value
+        load: async () => { 
+            return new Promise((resolve, reject) => {
+                chrome.storage.local.get(name, res => {
+                    const value = res?.[name] || get({subscribe});
+                    set(value);
+                    resolve(value);
+                });
+            })
         },
         sync: () => {
             subscribe(value => {
@@ -38,10 +42,17 @@ export const subscribeStores = (stores) => {
     chrome.storage.onChanged.addListener((changes, area) => {
         if (area == "local") {
             for (let [key, { newValue }] of Object.entries(changes)) {
+                if (key == "settings") return;
                 stores[key].set(newValue);
             }
         }
     });
+}
+
+export const syncStores = (stores) => {
+    for (let key of Object.keys(stores)) {
+        stores[key].sync();
+    }
 }
 
 const createStores = () => {
@@ -50,11 +61,7 @@ const createStores = () => {
         followedStreams: createStore("followedStreams", null),
         followedUsers: createStore("followedUsers", null),
         accessToken: createStore("accessToken", null),
-        settings: createStore("settings", defaultSettings)
-    }
-
-    for (let key of Object.keys(stores)) {
-        stores[key].sync();
+        settings: createStore("settings", {...defaultSettings})
     }
 
     return stores

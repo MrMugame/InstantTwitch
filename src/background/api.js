@@ -1,4 +1,4 @@
-import { sendNotification } from "../helpers/helpers";
+import { sendNotification, setBadgeText } from "../helpers/helpers";
 import { get } from "svelte/store";
 import { request } from "../helpers/request";
 import { stores } from "../stores/stores";
@@ -59,6 +59,7 @@ export const refreshFollowedStreams = async (user, notification) => {
         }
 
     }
+    setBadgeText(streams.length)
 
     stores.followedStreams.set(streams);
     

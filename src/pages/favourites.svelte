@@ -29,7 +29,6 @@ import { onDestroy } from "svelte";
     });
 
     const unload = reload.subscribe(async (bool) => {
-        console.log(bool);
         if (bool) {
             loading = true;
             sendMessage("refresh", false, true);
