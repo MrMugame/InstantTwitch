@@ -10,14 +10,14 @@ const createStore = (name, initValue) => {
         update,
         set,
         load: async () => {
-            const value = (await chrome.storage.local.get(name))[name] || null;
+            const value = (await chrome.storage.local.get(name))[name] || get({subscribe});
             set(value);
             return value
         },
         sync: () => {
             subscribe(value => {
                 if (!value) return;
-                if (!value?.valid) return;
+                if (value == defaultSettings) return;
                 chrome.storage.local.set({[name]: value});
             });
         }
