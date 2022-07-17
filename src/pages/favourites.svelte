@@ -8,7 +8,7 @@
     import { stores } from "../stores/stores";
     import { sendMessage } from "../helpers/helpers"
     import { SORTING } from "../stores/settings";
-import { onDestroy } from "svelte";
+    import { onDestroy } from "svelte";
 
     let loading = true;
     let filteredStreams = [];

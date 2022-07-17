@@ -16,8 +16,9 @@
     location.subscribe(() => {
         $filter = "";
     });
-</script>
 
+    $: document.documentElement.style.setProperty('color-scheme', $settings?.darkmode ? 'dark' : 'light');
+</script>
 
 <main class={$settings?.darkmode ? 'dark' : ''}>
     <div class="w-[450px] h-[600px] dark:bg-background bg-lightbackground overflow-hidden flex flex-col border-none -z-20">
@@ -34,9 +35,3 @@
         <Bottombar/>
     </div>
 </main>
-
-<style>
-    :root {
-        color-scheme: dark;
-    }
-</style>
