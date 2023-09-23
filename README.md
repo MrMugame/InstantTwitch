@@ -10,6 +10,7 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 - [x] Notifications
 - [ ] Full Twitch search
 - [x] Firefox support
+- [ ] Add a check to the github workflow for the tag and manifest versions to match
 
 ## Building
 
