@@ -13,9 +13,9 @@ export const fetchFollowedStreams = async (user) => {
 }
 
 export const fetchFollowedUsers = async (user, cursor = "") => {
-    const {data: follows, pagination} = await request("users/follows", {"from_id": user.id, "first": 100, "after": cursor});
-    
-    const ids = follows.map(x => x.to_id);
+    const {data: follows, pagination} = await request("channels/followed", {"user_id": user.id, "first": 100, "after": cursor});
+
+    const ids = follows.map(x => x.broadcaster_id);
     const {data: users} = await request("users", {id: ids})
 
     if (pagination.cursor) {

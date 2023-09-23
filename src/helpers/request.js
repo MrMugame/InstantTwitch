@@ -3,7 +3,6 @@ import { get } from "svelte/store";
 
 const CLIENTID = "i8uqx7hag4dcu1ipxqeggxyn1ys3om";
 
-
 export const request = async (url, params = {}) => {
     const formatedUrl = new URL("https://api.twitch.tv/helix/" + url);
     
