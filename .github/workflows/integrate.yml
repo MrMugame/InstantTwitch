@@ -17,9 +17,9 @@ jobs:
         with:
           node-version: 17
       - run: npm ci
-      - run: npm run build_chrome
-      - run: npm run build_firefox
-      - run: cd dist_chrome/ && zip -r ../chrome_build.zip *
+      - run: npm run build-chrome
+      - run: npm run build-firefox
+      - run: cd dist/chrome/ && zip -r ../chrome_build.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -45,7 +45,7 @@ jobs:
         uses: kewisch/action-web-ext@v1
         with:
           cmd: build
-          source: dist_firefox/
+          source: dist/firefox/
       - name: "web-ext sign"
         id: web-ext-sign
         uses: kewisch/action-web-ext@v1

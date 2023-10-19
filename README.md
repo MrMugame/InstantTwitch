@@ -8,6 +8,8 @@ A chrome extension build to replace the now broken and out dated [Twitch Now](ht
 - [ ] Add a check to the github workflow for the tag and manifest versions to match
 - [ ] Fix the shitty background loading which doesnt work reliable at all
 - [ ] Move to Svelte 5 when it's ready
+- [ ] Use Polyfill for apis
+- [ ] Fix Firefox slow thumbnail loading
 
 ## Building
 

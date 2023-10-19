@@ -1,25 +1,23 @@
 {
-  "name": "twitch-svelte",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build_chrome": "rm -rf dist_chrome && vite build --emptyOutDir -c vite.frontend.config.js && vite build -c vite.background.config.js && mv dist dist_chrome && cp src/chrome.manifest.json dist_chrome/manifest.json && mv dist_chrome/background.js dist_chrome/assets/ && cp -r src/assets/icons dist_chrome/",
-    "build_firefox": "rm -rf dist_firefox && vite build --emptyOutDir -c vite.frontend.config.js && vite build -c vite.background.config.js && mv dist dist_firefox && cp src/firefox.manifest.json dist_firefox/manifest.json && mv dist_firefox/background.js dist_firefox/assets/ && cp -r src/assets/icons dist_firefox/",
-    "build-background": "vite build -c vite.background.config.js",
-    "preview": "vite preview",
-    "clean": "rm -rf dist_chrome && rm -rf dist_firefox"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
-    "svelte": "^3.44.0",
-    "vite": "^2.9.0"
-  },
-  "dependencies": {
-    "@tailwindcss/forms": "^0.5.0",
-    "@tailwindcss/typography": "^0.5.2",
-    "svelte-spa-router": "^3.2.0",
-    "tailwindcss": "^3.0.23"
-  }
+	"name": "InsantTwitch",
+	"description": "Get updates on all your streamers and games on Twitch",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build-chrome": "tools/build-chrome.sh",
+		"build-firefox": "tools/build-firefox.sh",
+		"clean": "rm -rf dist"
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "^2.4.6",
+		"svelte": "^4.2.2",
+		"autoprefixer": "^10.4.16",
+		"vite": "^4.5.0"
+	},
+	"dependencies": {
+		"@tailwindcss/forms": "^0.5.6",
+		"@tailwindcss/typography": "^0.5.10",
+		"svelte-spa-router": "^3.2.0",
+		"tailwindcss": "^3.3.3"
+	}
 }
