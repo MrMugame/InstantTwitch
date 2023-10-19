@@ -19,7 +19,7 @@ jobs:
       - run: npm ci
       - run: npm run build-chrome
       - run: npm run build-firefox
-      - run: cd dist/chrome/ && zip -r ../chrome_build.zip *
+      - run: cd dist/chrome/ && zip -r ../../chrome_build.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
