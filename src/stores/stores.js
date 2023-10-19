@@ -9,7 +9,7 @@ const createStore = (name, initValue) => {
         subscribe,
         update,
         set,
-        load: async () => { 
+        load: async () => {
             return new Promise((resolve, reject) => {
                 chrome.storage.local.get(name, res => {
                     const value = res?.[name] || get({subscribe});
@@ -21,7 +21,7 @@ const createStore = (name, initValue) => {
         sync: () => {
             subscribe(value => {
                 if (!value) return;
-                if (value == defaultSettings) return;
+                if (value == defaultSettings) return; // TODO: What is this line supposed to do LOL?
                 chrome.storage.local.set({[name]: value});
             });
         }

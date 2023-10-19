@@ -22,7 +22,7 @@ const authorize = () => {
                     chrome.tabs.query({active: true, currentWindow: true}, ([newtab]) => {
                         let url = new URL(newtab.url);
                         let parameters = new URLSearchParams(url.hash);
-    
+
                         if (parameters.get("#access_token") != null) {
                             stores.accessToken.set(parameters.get("#access_token"))
                             chrome.tabs.remove(newtab.id);
@@ -40,8 +40,6 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
         chrome.alarms.clear("refresh");
     }
 
-    console.log("reload");
-
     const currentUser = await refreshCurrentUser(await stores.accessToken.load());
     if (currentUser != null) {
         await refreshFollowedStreams(currentUser, sendNotification);
@@ -54,7 +52,9 @@ const refresh = async (sendNotification = false, resetAlarm = false) => {
 }
 
 const run = async () => {
-    await initStores(stores);
+	try {
+		await initStores(stores);
+	} catch { return; }
     syncStores(stores)
     refresh(false, true);
 }
